@@ -42,7 +42,7 @@ if ($hassiteconfig) {
     );
 
     $settings[] = new admin_setting_configcheckbox_with_advanced(
-        'quiz/disablecorrect_showcorrect',
+        'quiz/disablecorrectshowcorrect',
         get_string('disablealreadycorrectquestions_showcorrect', $componentname),
         get_string('configdisablealreadycorrectquestions_showcorrect', $componentname),
         ['value' => 0, 'adv' => true]

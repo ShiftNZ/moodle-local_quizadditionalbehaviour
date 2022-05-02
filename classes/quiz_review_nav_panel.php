@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Overriden quiz attempt nav panel for local_quiz_disablecorrectanswers.
+ *  for local_quiz_disablecorrectanswers.
  *
  * @package     local_quiz_disablecorrectanswers
  * @author      Donald Barrett <donaldb@skills.org.nz>
@@ -29,11 +29,11 @@ namespace local_quiz_disablecorrectanswers;
 defined('MOODLE_INTERNAL') || die();
 
 use mod_quiz_renderer;
-use quiz_nav_section_heading;
+use quiz_review_nav_panel as core_quiz_review_nav_panel;
 use quiz_nav_question_button;
-use quiz_attempt_nav_panel as core_quiz_attempt_nav_panel;
+use quiz_nav_section_heading;
 
-class quiz_attempt_nav_panel extends core_quiz_attempt_nav_panel {
+class quiz_review_nav_panel extends core_quiz_review_nav_panel {
     public function get_question_buttons() {
         if (!$this->attemptobj->disablecorrect() || !$this->attemptobj->disableshowcorrectforstudent()) {
             // Do the core things.

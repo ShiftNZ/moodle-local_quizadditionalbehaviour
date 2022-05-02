@@ -46,10 +46,10 @@ function local_quiz_disablecorrectanswers_coursemodule_standard_elements(\moodle
     $mform->setDefault('disablecorrect', $quizconfig->disablecorrect);
 
     $visiblename = get_string('disablealreadycorrectquestions_showcorrect', 'local_quiz_disablecorrectanswers');
-    $mform->addElement('selectyesno', 'disablecorrect_showcorrect', $visiblename);
-    $mform->addHelpButton('disablecorrect_showcorrect', 'disablealreadycorrectquestions_showcorrect', 'local_quiz_disablecorrectanswers');
-    $mform->setAdvanced('disablecorrect_showcorrect', $quizconfig->disablecorrect_showcorrect_adv);
-    $mform->setDefault('disablecorrect_showcorrect', $quizconfig->disablecorrect_showcorrect);
+    $mform->addElement('selectyesno', 'disablecorrectshowcorrect', $visiblename);
+    $mform->addHelpButton('disablecorrectshowcorrect', 'disablealreadycorrectquestions_showcorrect', 'local_quiz_disablecorrectanswers');
+    $mform->setAdvanced('disablecorrectshowcorrect', $quizconfig->disablecorrectshowcorrect_adv);
+    $mform->setDefault('disablecorrectshowcorrect', $quizconfig->disablecorrectshowcorrect);
 
     $visiblename = get_string('disableshowcorrectforstudent', 'local_quiz_disablecorrectanswers');
     $mform->addElement('selectyesno', 'disableshowcorrectforstudent', $visiblename);

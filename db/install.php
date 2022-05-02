@@ -43,7 +43,7 @@ function xmldb_local_quiz_disablecorrectanswers_install() {
         $dbman->add_field($table, $field);
     }
 
-    // Define field disablecorrect_showcorrect to be added to quiz.
+    // Define field disablecorrectshowcorrect to be added to quiz.
     $fieldname = 'disablecorrectshowcorrect';
     $previousfield = 'disablecorrect';
     $field = new xmldb_field($fieldname, XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '0', $previousfield);

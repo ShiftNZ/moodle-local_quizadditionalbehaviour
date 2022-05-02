@@ -30,6 +30,7 @@ defined('MOODLE_INTERNAL') || die();
 $string['pluginname'] = 'Disable correctly answered questions in a quiz attempt';
 $string['additionalquestionbehaviour'] = 'Additional question behaviour';
 
+// Settings things.
 $string['configdisablealreadycorrectquestions']             = 'Only allow completion of each question once.';
 $string['disablealreadycorrectquestions']                   = 'Disable questions already correct';
 $string['disablealreadycorrectquestions_help']              = 'Will stop user\'s from having to recomplete questions';
@@ -42,5 +43,9 @@ $string['configdisableshowcorrectforstudent']               = 'Prevents students
 $string['disableshowcorrectforstudent']                     = 'Disable "Whether correct" for students';
 $string['disableshowcorrectforstudent_help']                = 'Prevents students from seeing specific question marks. For example the ticks for each choice in a multiple choice question';
 
-$string['previouslycompleted']                              = "Previously Completed";
-$string['alreadyansweredcorrectly']                         = "Already answered correctly";
+// Question state strings.
+$string['previouslycompleted']                              = 'Previously Completed';
+$string['alreadyansweredcorrectly']                         = 'Already answered correctly';
+
+// Other strings.
+$string['manualgradecomment'] = 'Correct in previous attempt';
