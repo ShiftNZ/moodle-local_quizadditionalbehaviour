@@ -37,6 +37,8 @@ use stdClass;
 use question_display_options;
 use html_writer;
 use context_module;
+use context_user;
+use Throwable;
 
 class custom_grading extends external_api {
     public static function get_parameters() : external_function_parameters {
@@ -59,8 +61,8 @@ class custom_grading extends external_api {
     }
 
     public static function get(int $attemptid, int $slot) : array {
-        global $CFG, $DB, $PAGE;
-        require_once($CFG->dirroot . '/mod/quiz/locallib.php');
+        global $CFG, $PAGE;
+        require_once($CFG->dirroot.'/mod/quiz/locallib.php');
 
         // Parameter validation.
         $params = self::validate_parameters(
@@ -163,14 +165,80 @@ class custom_grading extends external_api {
     }
 
     public static function set_parameters() : external_function_parameters {
-        return new external_function_parameters(['keys'], 'description');
+        return new external_function_parameters([
+            'attemptid' => new external_value(PARAM_INT, 'Attempt ID'),
+            'slot' => new external_value(PARAM_INT, 'Question slot in attempt'),
+            'comment' => new external_value(PARAM_RAW, 'Comment to save'),
+            'commentformat' => new external_value(PARAM_INT, 'Comment format'),
+            'grade' => new external_value(PARAM_RAW, 'Grade to save'),
+        ]);
     }
 
-    public static function set_returns() : external_function_parameters {
-        return new external_function_parameters(['keys'], 'description');
+    public static function set_returns() : external_single_structure {
+        return new external_single_structure([
+            'result' => new external_value(PARAM_RAW, 'Returned result'),
+        ]);
     }
 
-    public static function set() {
-        // Todo: Implement.
+    public static function set(int $attemptid, int $slot, $comment, int $commentformat, $grade) : array {
+        global $CFG, $DB, $USER;
+
+        require_once($CFG->dirroot.'/mod/quiz/locallib.php');
+        require_once($CFG->dirroot.'/lib/filelib.php');
+
+        // Parameter validation.
+        $params = self::validate_parameters(
+            self::set_parameters(), [
+                'attemptid' => $attemptid,
+                'slot' => $slot,
+                'comment' => $comment,
+                'commentformat' => $commentformat,
+                'grade' => $grade,
+            ]
+        );
+        $attemptid = $params['attemptid'];
+        $slot = $params['slot'];
+        $comment = $params['comment'];
+        $commentformat = $params['commentformat'];
+        $grade = $params['grade'];
+        try {
+            // Create attemptobj with all the errors, then our version.
+            $attemptobj = quiz_create_attempt_handling_errors($attemptid);
+            unset($attemptobj);
+            $attemptobj = quiz_attempt::create($attemptid);
+            // Can only grade finished attempts.
+            if (!$attemptobj->is_finished()) {
+                print_error('attemptclosed', 'quiz');
+            }
+            // Check login and permissions.
+            require_login($attemptobj->get_course(), false, $attemptobj->get_cm());
+            $attemptobj->require_capability('mod/quiz:grade');
+            $coursemodule = $attemptobj->get_cm();
+            $usercontext = context_user::instance($USER->id);
+            $modulecontext = context_module::instance($coursemodule->id);
+            $expression = '/\/draftfile.php\/'.$usercontext->id.'\/user\/draft\/(\d+)\//';
+            $isuserfileareapresent = preg_match($expression, $comment, $matches);
+            if ($isuserfileareapresent && isset($matches[1])) {
+                $commentlinked = file_rewrite_urls_to_pluginfile($comment, $matches[1]);
+            } else {
+                $commentlinked = $comment;
+            }
+            $attemptobj->manual_grade_question($slot, $commentlinked, $grade, $commentformat);
+            if ($isuserfileareapresent) {
+                $qa = $attemptobj->get_question_attempt($slot);
+                $laststep = $DB->get_records('question_attempt_steps', ['questionattemptid' => $qa->get_database_id()]);
+                $laststep = end($laststep);
+
+                // Params for saving the draft area files.
+                $draftitemid = intval($matches[1]);
+                $component = 'question';
+                $filearea = 'response_bf_comment';
+                $itemid = $laststep->id;
+                file_save_draft_area_files($draftitemid, $modulecontext->id, $component, $filearea, $itemid, null, $comment);
+            }
+            return ['result' => 'done'];
+        } catch (Throwable $error) {
+            return ['result' => 'error'];
+        }
     }
 }
