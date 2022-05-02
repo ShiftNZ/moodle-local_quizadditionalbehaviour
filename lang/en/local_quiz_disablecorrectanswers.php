@@ -31,6 +31,9 @@ $string['pluginname'] = 'Disable correctly answered questions in a quiz attempt'
 $string['additionalquestionbehaviour'] = 'Additional question behaviour';
 
 // Settings things.
+$string['customgrading'] = 'Quiz custom grading';
+$string['customgrading_help'] = 'Turns on quiz custom grading';
+
 $string['disablealreadycorrectquestions']                   = 'Prevent users from answering correctly answered questions from their previous attempt';
 $string['disablealreadycorrectquestions_help']              = 'Enabling this setting will prevent user\'s from answering any questions they have already answered correctly in their previous attempt';
 

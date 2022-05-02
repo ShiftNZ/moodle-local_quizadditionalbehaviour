@@ -36,24 +36,34 @@ function local_quiz_disablecorrectanswers_coursemodule_standard_elements(\moodle
     }
     $quizconfig = get_config('quiz');
 
+    // The header.
     $visiblename = get_string('additionalquestionbehaviour', 'local_quiz_disablecorrectanswers');
     $mform->addElement('header', 'additionalquestionbehaviour', $visiblename);
 
+    // Custom grading.
+    $mform->addElement('selectyesno', 'customgrading', get_string('customgrading', 'local_quiz_disablecorrectanswers'));
+    $mform->addHelpButton('customgrading', 'customgrading', 'local_quiz_disablecorrectanswers');
+    $mform->setAdvanced('customgrading', $quizconfig->customgrading_adv);
+    $mform->setDefault('customgrading', $quizconfig->customgrading);
+
+    // Disable already correct questions.
     $visiblename = get_string('disablealreadycorrectquestions', 'local_quiz_disablecorrectanswers');
     $mform->addElement('selectyesno', 'disablecorrect', $visiblename);
     $mform->addHelpButton('disablecorrect', 'disablealreadycorrectquestions', 'local_quiz_disablecorrectanswers');
     $mform->setAdvanced('disablecorrect', $quizconfig->disablecorrect_adv);
     $mform->setDefault('disablecorrect', $quizconfig->disablecorrect);
 
+    // Disable already correct questions and show the correct answer.
     $visiblename = get_string('disablealreadycorrectquestions_showcorrect', 'local_quiz_disablecorrectanswers');
     $mform->addElement('selectyesno', 'disablecorrectshowcorrect', $visiblename);
     $mform->addHelpButton('disablecorrectshowcorrect', 'disablealreadycorrectquestions_showcorrect', 'local_quiz_disablecorrectanswers');
     $mform->setAdvanced('disablecorrectshowcorrect', $quizconfig->disablecorrectshowcorrect_adv);
     $mform->setDefault('disablecorrectshowcorrect', $quizconfig->disablecorrectshowcorrect);
 
+    // Disable showing the correct answer to the user.
     $visiblename = get_string('disableshowcorrectforstudent', 'local_quiz_disablecorrectanswers');
     $mform->addElement('selectyesno', 'disableshowcorrectforstudent', $visiblename);
-    $mform->addHelpButton('disableshowcorrectforstudent', 'disableshowcorrectforstudent', 'quiz');
+    $mform->addHelpButton('disableshowcorrectforstudent', 'disableshowcorrectforstudent', 'local_quiz_disablecorrectanswers');
     $mform->setAdvanced('disableshowcorrectforstudent', $quizconfig->disableshowcorrectforstudent_adv);
     $mform->setDefault('disableshowcorrectforstudent', $quizconfig->disableshowcorrectforstudent);
 }

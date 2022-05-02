@@ -35,6 +35,13 @@ if ($hassiteconfig) {
     $settings = [];
 
     $settings[] = new admin_setting_configcheckbox_with_advanced(
+        'quiz/customgrading',
+        get_string('customgrading', $componentname),
+        get_string('customgrading_help', $componentname),
+        ['value' => 0, 'adv' => false]
+    );
+
+    $settings[] = new admin_setting_configcheckbox_with_advanced(
         'quiz/disablecorrect',
         get_string('disablealreadycorrectquestions', $componentname),
         get_string('disablealreadycorrectquestions_help', $componentname),
