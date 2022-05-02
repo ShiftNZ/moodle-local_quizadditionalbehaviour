@@ -31,15 +31,12 @@ $string['pluginname'] = 'Disable correctly answered questions in a quiz attempt'
 $string['additionalquestionbehaviour'] = 'Additional question behaviour';
 
 // Settings things.
-$string['configdisablealreadycorrectquestions']             = 'Only allow completion of each question once.';
-$string['disablealreadycorrectquestions']                   = 'Disable questions already correct';
-$string['disablealreadycorrectquestions_help']              = 'Will stop user\'s from having to recomplete questions';
+$string['disablealreadycorrectquestions']                   = 'Prevent users from answering correctly answered questions from their previous attempt';
+$string['disablealreadycorrectquestions_help']              = 'Enabling this setting will prevent user\'s from answering any questions they have already answered correctly in their previous attempt';
 
-$string['configdisablealreadycorrectquestions_showcorrect'] = 'Show correct answer when only allow completion of each question once.';
 $string['disablealreadycorrectquestions_showcorrect']       = 'Show correct answer with disabled correct';
-$string['disablealreadycorrectquestions_showcorrect_help']  = 'Will show the users the correct question answer for disabled questions';
+$string['disablealreadycorrectquestions_showcorrect_help']  = 'Enabling this setting will show the users the correct answer for the question that was previously answered correctly';
 
-$string['configdisableshowcorrectforstudent']               = 'Prevents students from seeing specific question marks.';
 $string['disableshowcorrectforstudent']                     = 'Disable "Whether correct" for students';
 $string['disableshowcorrectforstudent_help']                = 'Prevents students from seeing specific question marks. For example the ticks for each choice in a multiple choice question';
 

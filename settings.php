@@ -37,21 +37,21 @@ if ($hassiteconfig) {
     $settings[] = new admin_setting_configcheckbox_with_advanced(
         'quiz/disablecorrect',
         get_string('disablealreadycorrectquestions', $componentname),
-        get_string('configdisablealreadycorrectquestions', $componentname),
+        get_string('disablealreadycorrectquestions_help', $componentname),
         ['value' => 0, 'adv' => true]
     );
 
     $settings[] = new admin_setting_configcheckbox_with_advanced(
         'quiz/disablecorrectshowcorrect',
         get_string('disablealreadycorrectquestions_showcorrect', $componentname),
-        get_string('configdisablealreadycorrectquestions_showcorrect', $componentname),
+        get_string('disablealreadycorrectquestions_showcorrect_help', $componentname),
         ['value' => 0, 'adv' => true]
     );
 
     $settings[] = new admin_setting_configcheckbox_with_advanced(
         'quiz/disableshowcorrectforstudent',
         get_string('disableshowcorrectforstudent', $componentname),
-        get_string('configdisableshowcorrectforstudent', $componentname),
+        get_string('disableshowcorrectforstudent_help', $componentname),
         ['value' => 0, 'adv' => true]
     );
 
