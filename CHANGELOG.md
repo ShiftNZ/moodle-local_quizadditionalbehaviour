@@ -8,6 +8,9 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 
 There is nothing that is unreleased
 
+## [Version 2022032401, release 3.9.1] - 2022-05-22
+- Fixed a whole bunch of missed typed things
+
 ## [Version 2022032400, release 3.9.0] - 2022-05-22
 ### Added
 - Additional fields to the core quiz table

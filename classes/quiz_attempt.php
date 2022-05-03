@@ -186,7 +186,7 @@ class quiz_attempt extends core_quiz_attempt {
         // Do the overriden things.
         if ($this->disablecorrect()) {
             $qattempt = $this->get_last_complete_attempt();
-            $commentstring = get_string('manualgradecomment', 'local_quizdisablecorrectanswers');
+            $commentstring = get_string('manualgradecomment', 'local_quizadditionalbehaviour');
             foreach ($this->get_slots('all') as $slot) {
                 if ($qattempt[$slot]->correct) {
                     $this->manual_grade_question($slot, $commentstring, $qattempt[$slot]->maxMark, 1);

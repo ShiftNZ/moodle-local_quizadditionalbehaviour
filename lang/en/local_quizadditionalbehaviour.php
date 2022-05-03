@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * English language strings for local_quiz_disablecorrectanswers.
+ * English language strings for local_quizadditionalbehaviour.
  *
- * @package     local_quiz_disablecorrectanswers
+ * @package     local_quizadditionalbehaviour
  * @author      Donald Barrett <donaldb@skills.org.nz>
  * @copyright   2022 onwards, Skills Consulting Group Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,7 +27,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 // Default langstring.
-$string['pluginname'] = 'Disable correctly answered questions in a quiz attempt';
+$string['pluginname'] = 'Quiz additional behaviour';
 $string['additionalquestionbehaviour'] = 'Additional question behaviour';
 
 // Settings things.
