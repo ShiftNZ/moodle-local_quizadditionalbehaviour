@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Events definition for local_quiz_disablecorrectanswers.
+ * Events definition for local_quizadditionalbehaviour.
  *
- * @package     local_quiz_disablecorrectanswers
+ * @package     local_quizadditionalbehaviour
  * @author      Donald Barrett <donaldb@skills.org.nz>
  * @copyright   2022 onwards, Skills Consulting Group Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -29,7 +29,7 @@ defined('MOODLE_INTERNAL') || die();
 $observers = [
     [
         'eventname' => '\mod_quiz\event\attempt_submitted',
-        'callback' => '\local_quiz_disablecorrectanswers\event\observer::quiz_attempt_submitted',
+        'callback' => '\local_quizadditionalbehaviour\event\observer::quiz_attempt_submitted',
         // Run this after db transaction has been committed successfully.
         'internal' => false,
     ]

@@ -15,15 +15,15 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Quiz attempt things for local_quiz_disablecorrectanswers.
+ * Quiz attempt things for local_quizadditionalbehaviour.
  *
- * @package     local_quiz_disablecorrectanswers
+ * @package     local_quizadditionalbehaviour
  * @author      Donald Barrett <donaldb@skills.org.nz>
  * @copyright   2022 onwards, Skills Consulting Group Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_quiz_disablecorrectanswers;
+namespace local_quizadditionalbehaviour;
 
 // No direct access.
 
@@ -32,7 +32,7 @@ use quiz_attempt as core_quiz_attempt;
 use quiz_access_manager;
 use question_state;
 use question_engine as core_question_engine;
-use local_quiz_disablecorrectanswers\question\question_engine as local_question_engine;
+use local_quizadditionalbehaviour\question\question_engine as local_question_engine;
 use context_module;
 use context_course;
 use stdClass;
@@ -80,7 +80,7 @@ class quiz_attempt extends core_quiz_attempt {
     public function get_question_status($slot, $showcorrectness) {
         $lastcompleteattempt = $this->get_last_complete_attempt();
         if ($this->disablecorrect() && !empty($lastcompleteattempt) && $lastcompleteattempt[$slot]->correct) {
-            return get_string('previouslycompleted', 'local_quiz_disablecorrectanswers');
+            return get_string('previouslycompleted', 'local_quizadditionalbehaviour');
         } else {
             return parent::get_question_status($slot, $showcorrectness);
         }
@@ -295,10 +295,10 @@ class quiz_attempt extends core_quiz_attempt {
 
         $this->quba = local_question_engine::load_questions_usage_by_activity($this->attempt->uniqueid);
         $this->slots = $DB->get_records('quiz_slots',
-            array('quizid' => $this->get_quizid()), 'slot',
+            ['quizid' => $this->get_quizid()], 'slot',
             'slot, id, requireprevious, questionid, includingsubcategories');
         $this->sections = array_values($DB->get_records('quiz_sections',
-            array('quizid' => $this->get_quizid()), 'firstslot'));
+            ['quizid' => $this->get_quizid()], 'firstslot'));
 
         $this->link_sections_and_slots();
         $this->determine_layout();

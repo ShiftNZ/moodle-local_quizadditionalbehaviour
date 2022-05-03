@@ -15,21 +15,21 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Question attempt override for local_quiz_disablecorrectanswers.
+ * Question attempt override for local_quizadditionalbehaviour.
  *
- * @package     local_quiz_disablecorrectanswers
+ * @package     local_quizadditionalbehaviour
  * @author      Donald Barrett <donaldb@skills.org.nz>
  * @copyright   2022 onwards, Skills Consulting Group Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_quiz_disablecorrectanswers\question;
+namespace local_quizadditionalbehaviour\question;
 
 // No direct access.
 defined('MOODLE_INTERNAL') || die();
 
 use question_attempt as core_question_attempt;
-use local_quiz_disablecorrectanswers\question\behaviour\deferredfeedback\qbehaviour_deferredfeedback as local_qbehaviour_deferredfeedback;
+use local_quizadditionalbehaviour\question\behaviour\deferredfeedback\qbehaviour_deferredfeedback as local_qbehaviour_deferredfeedback;
 use question_usage_observer;
 use question_bank;
 use question_engine;

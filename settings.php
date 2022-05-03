@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Settings for local_quiz_disablecorrectanswers.
+ * Settings for local_quizadditionalbehaviour.
  *
- * @package     local_quiz_disablecorrectanswers
+ * @package     local_quizadditionalbehaviour
  * @author      Donald Barrett <donaldb@skills.org.nz>
  * @copyright   2022 onwards, Skills Consulting Group Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -29,7 +29,7 @@ defined('MOODLE_INTERNAL') || die();
 // Only render for users that have the site config capability.
 if ($hassiteconfig) {
     // Used for the component name in the get_string function.
-    $componentname = 'local_quiz_disablecorrectanswers';
+    $componentname = 'local_quizadditionalbehaviour';
 
     // Container for the settings.
     $settings = [];

@@ -15,20 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Question engine override for local_quiz_disablecorrectanswers.
+ * Question engine override for local_quizadditionalbehaviour.
  *
- * @package     local_quiz_disablecorrectanswers
+ * @package     local_quizadditionalbehaviour
  * @author      Donald Barrett <donaldb@skills.org.nz>
  * @copyright   2022 onwards, Skills Consulting Group Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_quiz_disablecorrectanswers\question;
+namespace local_quizadditionalbehaviour\question;
 
 // No direct access.
 defined('MOODLE_INTERNAL') || die();
 
-use local_quiz_disablecorrectanswers\question\question_engine_data_mapper as local_question_engine_data_mapper;
+use local_quizadditionalbehaviour\question\question_engine_data_mapper as local_question_engine_data_mapper;
 use moodle_database;
 use question_engine as core_question_engine;
 

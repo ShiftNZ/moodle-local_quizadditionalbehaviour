@@ -15,15 +15,15 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * External webservice functions for custom grading for local_quiz_disablecorrectanswers.
+ * External webservice functions for custom grading for local_quizadditionalbehaviour.
  *
- * @package     local_quiz_disablecorrectanswers
+ * @package     local_quizadditionalbehaviour
  * @author      Donald Barrett <donaldb@skills.org.nz>
  * @copyright   2022 onwards, Skills Consulting Group Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_quiz_disablecorrectanswers\local\external;
+namespace local_quizadditionalbehaviour\local\external;
 
 // No direct access.
 defined('MOODLE_INTERNAL') || die();
@@ -32,7 +32,7 @@ use external_api;
 use external_function_parameters;
 use external_value;
 use external_single_structure;
-use local_quiz_disablecorrectanswers\quiz_attempt;
+use local_quizadditionalbehaviour\quiz_attempt;
 use stdClass;
 use question_display_options;
 use html_writer;

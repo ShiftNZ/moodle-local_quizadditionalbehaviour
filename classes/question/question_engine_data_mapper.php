@@ -15,21 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Question engine data mapper override for local_quiz_disablecorrect.
+ * Question engine data mapper override for local_quizadditionalbehaviour.
  *
- * @package     local_quiz_disablecorrect
+ * @package     local_quizadditionalbehaviour
  * @author      Donald Barrett <donaldb@skills.org.nz>
  * @copyright   2022 onwards, Skills Consulting Group Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_quiz_disablecorrectanswers\question;
+namespace local_quizadditionalbehaviour\question;
 
 // No direct access.
 defined('MOODLE_INTERNAL') || die();
 
 use coding_exception;
-
 use question_engine_data_mapper as core_question_engine_data_mapper;
 
 class question_engine_data_mapper extends core_question_engine_data_mapper {
@@ -74,7 +73,7 @@ WHERE
 ORDER BY
     qa.slot,
     qas.sequencenumber
-    ", array('qubaid' => $qubaid));
+    ", ['qubaid' => $qubaid]);
 
         if (!$records->valid()) {
             throw new coding_exception('Failed to load questions_usage_by_activity ' . $qubaid);

@@ -15,21 +15,21 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Event observer for local_quiz_disablecorrectanswers.
+ * Event observer for local_quizadditionalbehaviour.
  *
- * @package     local_quiz_disablecorrectanswers
+ * @package     local_quizadditionalbehaviour
  * @author      Donald Barrett <donaldb@skills.org.nz>
  * @copyright   2022 onwards, Skills Consulting Group Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_quiz_disablecorrectanswers\event;
+namespace local_quizadditionalbehaviour\event;
 
 // No direct access.
 defined('MOODLE_INTERNAL') || die();
 
 use mod_quiz\event\attempt_submitted;
-use local_quiz_disablecorrectanswers\quiz_attempt;
+use local_quizadditionalbehaviour\quiz_attempt;
 
 class observer {
     public static function quiz_attempt_submitted(attempt_submitted $event) : void {
@@ -53,7 +53,7 @@ class observer {
 
         // Make sure that any questions that have been answered correctly by the learner are filled in.
         $thelastquizattempt = $quizattempt->get_last_complete_attempt();
-        $commentstring = get_string('manualgradecomment', 'local_quizdisablecorrectanswers');
+        $commentstring = get_string('manualgradecomment', 'local_quizadditionalbehaviour');
         foreach ($quizattempt->get_slots('all') as $slot) {
             if ($thelastquizattempt[$slot]->correct) {
                 $quizattempt->manual_grade_question($slot, $commentstring, $thelastquizattempt[$slot]->maxMark, 1);

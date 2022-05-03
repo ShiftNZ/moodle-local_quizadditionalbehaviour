@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Install script for local_quiz_disablecorrectanswers.
+ * Install script for local_quizadditionalbehaviour.
  *
- * @package     local_quiz_disablecorrectanswers
+ * @package     local_quizadditionalbehaviour
  * @author      Donald Barrett <donaldb@skills.org.nz>
  * @copyright   2022 onwards, Skills Consulting Group Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -26,7 +26,7 @@
 // No direct access.
 defined('MOODLE_INTERNAL') || die();
 
-function xmldb_local_quiz_disablecorrectanswers_install() {
+function xmldb_local_quizadditionalbehaviour_install() {
     global $DB;
     $dbman = $DB->get_manager();
 
@@ -44,7 +44,7 @@ function xmldb_local_quiz_disablecorrectanswers_install() {
     }
 
     // Define field disablecorrectshowcorrect to be added to quiz.
-    $fieldname = 'disablecorrectshowcorrect';
+    $fieldname = 'disablecorrect_showcorrect';
     $previousfield = 'disablecorrect';
     $field = new xmldb_field($fieldname, XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '0', $previousfield);
 
@@ -55,10 +55,20 @@ function xmldb_local_quiz_disablecorrectanswers_install() {
 
     // Define field disableshowcorrectforstudent to be added to quiz.
     $fieldname = 'disableshowcorrectforstudent';
-    $previousfield = 'disablecorrectshowcorrect';
-    $field = new xmldb_field($fieldname, XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '0', 'disablecorrectshowcorrect');
+    $previousfield = 'disablecorrect_showcorrect';
+    $field = new xmldb_field($fieldname, XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '0', $previousfield);
 
     // Conditionally launch add field disableshowcorrectforstudent.
+    if (!$dbman->field_exists($table, $field)) {
+        $dbman->add_field($table, $field);
+    }
+
+    // Define field customgrading to be added to quiz.
+    $fieldname = 'customgrading';
+    $previousfield = 'disableshowcorrectforstudent';
+    $field = new xmldb_field($fieldname, XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '0', $previousfield);
+
+    // Conditionally launch add field customgrading.
     if (!$dbman->field_exists($table, $field)) {
         $dbman->add_field($table, $field);
     }
