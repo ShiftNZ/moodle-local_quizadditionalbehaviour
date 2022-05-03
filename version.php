@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for local_quiz_disablecorrectanswers.
+ * Version information for local_quizadditionalbehaviour.
  *
- * @package     local_quiz_disablecorrectanswers
+ * @package     local_quizadditionalbehaviour
  * @author      Donald Barrett <donaldb@skills.org.nz>
  * @copyright   2022 onwards, Skills Consulting Group Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -30,7 +30,7 @@ defined('MOODLE_INTERNAL') || die();
 $plugin->requires = 2020061500;
 
 // Plugin details.
-$plugin->component = 'local_quiz_disablecorrectanswers';
+$plugin->component = 'local_quizadditionalbehaviour';
 $plugin->version = 2022032400;
 $plugin->release = 'v3.9.0';
 
