@@ -8,7 +8,11 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 
 There is nothing that is unreleased
 
-## [Version 2022032402, release 3.9.2] - 2022-05-22
+## [Version 2022032403, release v3.9.3]
+### Fixed
+- Well, tidied up some code formatting because for renderers
+
+## [Version 2022032402, release v3.9.2] - 2022-05-22
 ### Added
 - Instructions in the README file to make the additional behaviour work in the theme
 - The renderers that need to be moved into the theme. Instructions in the README
@@ -16,11 +20,11 @@ There is nothing that is unreleased
 ### Fixed
 - Incorrect dates in previous change log entries
 
-## [Version 2022032401, release 3.9.1] - 2022-04-22
+## [Version 2022032401, release v3.9.1] - 2022-04-22
 ### Fixed
 - Fixed a whole bunch of missed typed things
 
-## [Version 2022032400, release 3.9.0] - 2022-04-22
+## [Version 2022032400, release v3.9.0] - 2022-04-22
 ### Added
 - Additional fields to the core quiz table
 - Overridden question and quiz classes for theme renderer overrides to use

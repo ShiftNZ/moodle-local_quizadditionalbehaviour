@@ -150,13 +150,14 @@ class mod_quiz_renderer extends core_mod_quiz_renderer {
     }
 
     public function review_page(
-        core_quiz_attempt $attemptobj,
-        $slots,
-        $page,
-        $showall,
-        $lastpage,
-        core_mod_quiz_display_options $displayoptions,
-        $summarydata) {
+            core_quiz_attempt $attemptobj,
+            $slots,
+            $page,
+            $showall,
+            $lastpage,
+            core_mod_quiz_display_options $displayoptions,
+            $summarydata
+    ) {
         $attemptobj = quiz_attempt::create($attemptobj->get_attemptid());
         $displayoptions = $attemptobj->get_display_options(true);
         return parent::review_page($attemptobj, $slots, $page, $showall, $lastpage, $displayoptions, $summarydata);

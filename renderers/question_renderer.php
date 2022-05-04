@@ -37,7 +37,8 @@ class local_quizadditionalbehaviour_core_question_renderer extends \core_questio
             qbehaviour_renderer $behaviouroutput,
             qtype_renderer $qtoutput,
             question_display_options $options,
-            $number) {
+            $number
+    ) {
         // Custom question rendering.
         if (isset($options->displayAnswerOnly) && $options->displayAnswerOnly) {
             return $this->formulation($qa, $behaviouroutput, $qtoutput, $options);
