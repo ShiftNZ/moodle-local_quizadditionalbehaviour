@@ -8,6 +8,10 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 
 There is nothing that is unreleased
 
+## [Version 2022032404, release v3.9.4]
+### Added
+- Patch file for adding the other theme
+
 ## [Version 2022032403, release v3.9.3]
 ### Fixed
 - Well, tidied up some code formatting because for renderers

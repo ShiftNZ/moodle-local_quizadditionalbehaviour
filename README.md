@@ -18,7 +18,12 @@ The local plugin does not work on its own, it requires a custom theme with a bun
 How to make the things work
 ===========================
 
-For the 'additional quiz behaviour' to work, the question_renderer and the quiz_renderer needs to be overridden.
+For the 'additional quiz behaviour' to work, the question_renderer and the quiz_renderer needs to be overridden. 
+
+If you are using the core Moodle boost theme, use the patch file in the directory ./patches/additional_theme_renderers.patch.
+See [https://docs.moodle.org/dev/How_to_apply_a_patch](https://docs.moodle.org/dev/How_to_apply_a_patch)
+
+If you have a custom theme, add the additional things to your custom theme as below.
 
 To override the question_engine renderer:
 
