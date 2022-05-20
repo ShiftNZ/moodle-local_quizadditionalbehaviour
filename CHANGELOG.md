@@ -8,6 +8,15 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 
 There is nothing that is unreleased
 
+## [Version 2022032405, release v3.9.5]
+### Added
+- Missing js stuff for custom grading
+- Missing template for custom grading
+- Lang string for custom grading error
+
+### Updated
+- Patch file for renderer to use template from local_quizadditionalbehaviour
+
 ## [Version 2022032404, release v3.9.4]
 ### Added
 - Patch file for adding the other theme

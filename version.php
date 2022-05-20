@@ -31,8 +31,8 @@ $plugin->requires = 2020061500;
 
 // Plugin details.
 $plugin->component = 'local_quizadditionalbehaviour';
-$plugin->version = 2022032404;
-$plugin->release = 'v3.9.4';
+$plugin->version = 2022032405;
+$plugin->release = 'v3.9.5';
 
 // Plugin status details.
 $plugin->maturity = MATURITY_STABLE;
