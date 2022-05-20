@@ -49,3 +49,4 @@ $string['alreadyansweredcorrectly']                         = 'Already answered 
 
 // Other strings.
 $string['manualgradecomment'] = 'Correct in previous attempt';
+$string['customgradingerror'] = 'There was an error in your input, please try again.';
