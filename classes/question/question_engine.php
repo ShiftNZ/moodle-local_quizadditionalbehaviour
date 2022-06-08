@@ -25,9 +25,6 @@
 
 namespace local_quizadditionalbehaviour\question;
 
-// No direct access.
-defined('MOODLE_INTERNAL') || die();
-
 use local_quizadditionalbehaviour\question\question_engine_data_mapper as local_question_engine_data_mapper;
 use moodle_database;
 use question_engine as core_question_engine;

@@ -25,8 +25,6 @@
 
 namespace local_quizadditionalbehaviour;
 
-// No direct access.
-
 use mod_quiz_renderer;
 use quiz_attempt as core_quiz_attempt;
 use quiz_access_manager;
@@ -39,8 +37,6 @@ use stdClass;
 use mod_quiz\event\question_manually_graded;
 use coding_exception;
 use html_writer;
-
-defined('MOODLE_INTERNAL') || die();
 
 class quiz_attempt extends core_quiz_attempt {
     public function __construct($attempt, $quiz, $cm, $course, $loadquestions = true) {
@@ -61,8 +57,7 @@ class quiz_attempt extends core_quiz_attempt {
             $this->reviewoptions = quiz_get_review_options($this->get_quiz(),
                 $this->attempt, $this->quizobj->get_context());
             if ($this->is_own_preview()) {
-                // It should  always be possible for a teacher to review their
-                // own preview irrespective of the review options settings.
+                // It should always be possible for a teacher to review their own preview.
                 $this->reviewoptions->attempt = true;
             }
 

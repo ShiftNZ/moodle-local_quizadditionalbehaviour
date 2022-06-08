@@ -25,9 +25,6 @@
 
 namespace local_quizadditionalbehaviour\question;
 
-// No direct access.
-defined('MOODLE_INTERNAL') || die();
-
 use question_usage_by_activity as core_question_usage_by_activity;
 use question_engine_unit_of_work;
 use coding_exception;

@@ -25,9 +25,6 @@
 
 namespace local_quizadditionalbehaviour;
 
-// No direct access.
-defined('MOODLE_INTERNAL') || die();
-
 class quiz extends \quiz {
     protected $lastattempt;
     public function __construct($quiz, $cm, $course, $getcontext = true) {

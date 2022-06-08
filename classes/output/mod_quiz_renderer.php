@@ -17,18 +17,14 @@
 /**
  * Quiz renderer override for local_quizadditionalbehaviour.
  *
- * Todo: This file must be
- *
  * @package     local_quizadditionalbehaviour
  * @author      Donald Barrett <donaldb@skills.org.nz>
  * @copyright   2022 onwards, Skills Consulting Group Ltd
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// Todo: Update namespace to theme_themename\output.
 namespace local_quizadditionalbehaviour\output;
 
-// No direct access.
 use local_quizadditionalbehaviour\quiz;
 use local_quizadditionalbehaviour\quiz_attempt;
 use local_quizadditionalbehaviour\quiz_attempt_nav_panel;
@@ -44,8 +40,6 @@ use html_table_cell;
 use html_writer;
 use question_display_options;
 use coding_exception;
-
-defined('MOODLE_INTERNAL') || die();
 
 class mod_quiz_renderer extends core_mod_quiz_renderer {
     public function summary_page($attemptobj, $displayoptions) {

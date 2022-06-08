@@ -23,9 +23,6 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// No direct access.
-defined('MOODLE_INTERNAL') || die();
-
 function xmldb_local_quizadditionalbehaviour_install() {
     global $DB;
     $dbman = $DB->get_manager();

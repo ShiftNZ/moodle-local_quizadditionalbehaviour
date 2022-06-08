@@ -25,9 +25,6 @@
 
 namespace local_quizadditionalbehaviour;
 
-// No direct access.
-defined('MOODLE_INTERNAL') || die();
-
 use mod_quiz_renderer;
 use quiz_nav_section_heading;
 use quiz_nav_question_button;
@@ -52,8 +49,7 @@ class quiz_attempt_nav_panel extends core_quiz_attempt_nav_panel {
 
             $qa = $this->attemptobj->get_question_attempt($slot);
 
-            // We actually want the nav to to show correctness
-            // So we preserve the old value here
+            // We actually want the nav to show correctness so we preserve the old value here.
             if ($this->attemptobj->disableshowcorrectforstudent()) {
                 $showcorrectness = ($this->options->correctness || $this->options->truecorrectness) && $qa->has_marks();
             } else {

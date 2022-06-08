@@ -25,9 +25,6 @@
 
 namespace local_quizadditionalbehaviour\local\external;
 
-// No direct access.
-defined('MOODLE_INTERNAL') || die();
-
 use external_api;
 use external_function_parameters;
 use external_value;
@@ -39,6 +36,7 @@ use html_writer;
 use context_module;
 use context_user;
 use Throwable;
+use moodle_exception;
 
 class custom_grading extends external_api {
     public static function get_parameters() : external_function_parameters {
@@ -66,7 +64,7 @@ class custom_grading extends external_api {
 
         // Parameter validation.
         $params = self::validate_parameters(
-            self::get_parameters(), ['attemptid' => $attemptid, 'slot' => $slot,]
+            self::get_parameters(), ['attemptid' => $attemptid, 'slot' => $slot, ]
         );
         $attemptid = $params['attemptid'];
         $slot = $params['slot'];
@@ -80,14 +78,14 @@ class custom_grading extends external_api {
 
         // Can only grade finished attempts.
         if (!$attemptobj->is_finished()) {
-            print_error('attemptclosed', 'quiz');
+            throw new moodle_exception('attemptclosed', 'quiz');
         }
 
         // Check login and permissions.
         require_login($attemptobj->get_course(), false, $attemptobj->get_cm());
         $attemptobj->require_capability('mod/quiz:grade');
 
-        // Get everything we need to get everything we need to re-render
+        // Get everything we need to get everything we need to re-render.
         $qa = $attemptobj->get_question_attempt($slot);
         $attempt = $attemptobj->get_attempt();
         $quiz = $attemptobj->get_quiz();
@@ -208,7 +206,7 @@ class custom_grading extends external_api {
             $attemptobj = quiz_attempt::create($attemptid);
             // Can only grade finished attempts.
             if (!$attemptobj->is_finished()) {
-                print_error('attemptclosed', 'quiz');
+                throw new moodle_exception('attemptclosed', 'quiz');
             }
             // Check login and permissions.
             require_login($attemptobj->get_course(), false, $attemptobj->get_cm());

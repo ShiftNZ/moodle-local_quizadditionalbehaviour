@@ -25,9 +25,6 @@
 
 namespace local_quizadditionalbehaviour\question\behaviour\deferredfeedback;
 
-// No direct access.
-defined('MOODLE_INTERNAL') || die();
-
 use qbehaviour_deferredfeedback_renderer as core_qbehaviour_deferredfeedback_renderer;
 
 class qbehaviour_deferredfeedback_renderer extends core_qbehaviour_deferredfeedback_renderer {

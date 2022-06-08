@@ -25,11 +25,9 @@
 
 namespace local_quizadditionalbehaviour\question;
 
-// No direct access.
-defined('MOODLE_INTERNAL') || die();
-
 use question_attempt as core_question_attempt;
-use local_quizadditionalbehaviour\question\behaviour\deferredfeedback\qbehaviour_deferredfeedback as local_qbehaviour_deferredfeedback;
+use local_quizadditionalbehaviour\question\behaviour\deferredfeedback\qbehaviour_deferredfeedback
+        as local_qbehaviour_deferredfeedback;
 use question_usage_observer;
 use question_bank;
 use question_engine;

@@ -25,9 +25,6 @@
 
 namespace local_quizadditionalbehaviour\question;
 
-// No direct access.
-defined('MOODLE_INTERNAL') || die();
-
 use coding_exception;
 use question_engine_data_mapper as core_question_engine_data_mapper;
 
