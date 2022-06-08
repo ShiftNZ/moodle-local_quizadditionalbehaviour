@@ -25,9 +25,6 @@
 
 namespace local_quizadditionalbehaviour\event;
 
-// No direct access.
-defined('MOODLE_INTERNAL') || die();
-
 use mod_quiz\event\attempt_submitted;
 use local_quizadditionalbehaviour\quiz_attempt;
 

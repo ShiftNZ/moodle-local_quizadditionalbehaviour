@@ -106,11 +106,11 @@ class local_quizadditionalbehaviour_core_question_renderer extends \core_questio
                 $output .= $this->formulation($options->passed_question, $behaviouroutput, $qtoutput, $options);
                 $output .= html_writer::end_tag('div');
                 $output .= html_writer::end_tag('div');
-                $passed_question_options = $options;
-                $passed_question_options->readonly = true;
+                $passedquestionoptions = $options;
+                $passedquestionoptions->readonly = true;
                 $output .= html_writer::tag(
                     'div',
-                    $this->formulation($options->passed_question, $behaviouroutput, $qtoutput, $passed_question_options),
+                    $this->formulation($options->passed_question, $behaviouroutput, $qtoutput, $passedquestionoptions),
                     ['class' => 'formulation clearfix']
                 );
             } else {
