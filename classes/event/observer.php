@@ -27,8 +27,22 @@ namespace local_quizadditionalbehaviour\event;
 
 use mod_quiz\event\attempt_submitted;
 use local_quizadditionalbehaviour\quiz_attempt;
+use coding_exception;
+use dml_exception;
 
+/**
+ * Class that has the callback functions for the events that this plugin is listening to.
+ */
 class observer {
+    /**
+     * Ensure that any previous correctly answered questions and
+     * associated grades are carried over to the current attempt.
+     *
+     * @param attempt_submitted $event
+     * @return void
+     * @throws coding_exception
+     * @throws dml_exception
+     */
     public static function quiz_attempt_submitted(attempt_submitted $event) : void {
         global $DB;
 

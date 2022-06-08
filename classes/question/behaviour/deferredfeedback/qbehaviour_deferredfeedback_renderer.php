@@ -27,5 +27,9 @@ namespace local_quizadditionalbehaviour\question\behaviour\deferredfeedback;
 
 use qbehaviour_deferredfeedback_renderer as core_qbehaviour_deferredfeedback_renderer;
 
+/**
+ * Overridden deferred feedback renderer however, I am not entirely
+ * sure that this is necessary as there is no implementation.
+ */
 class qbehaviour_deferredfeedback_renderer extends core_qbehaviour_deferredfeedback_renderer {
 }

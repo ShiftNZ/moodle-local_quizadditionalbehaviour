@@ -36,7 +36,19 @@ use Iterator;
 use coding_exception;
 use Exception;
 
+/**
+ * Overridden question_attempt class.
+ */
 class question_attempt extends core_question_attempt {
+    /**
+     * Render the overridden things with the overriden display options etc.
+     *
+     * @param $options
+     * @param $number
+     * @param $page
+     * @return string
+     * @throws coding_exception
+     */
     public function render($options, $number, $page = null) {
         $this->ensure_question_initialised();
         if (is_null($page)) {
@@ -58,6 +70,7 @@ class question_attempt extends core_question_attempt {
      * @param question_usage_observer $observer the observer that will be monitoring changes in us.
      * @param string $preferredbehaviour the preferred behaviour under which we are operating.
      * @return question_attempt The newly constructed question_attempt.
+     * @throws coding_exception
      */
     public static function load_from_records($records, $questionattemptid,
         question_usage_observer $observer, $preferredbehaviour) {

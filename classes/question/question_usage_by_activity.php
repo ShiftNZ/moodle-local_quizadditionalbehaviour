@@ -30,7 +30,19 @@ use question_engine_unit_of_work;
 use coding_exception;
 use context;
 
+/**
+ * Overridden quba to use the overridden question_attempt class.
+ */
 class question_usage_by_activity extends core_question_usage_by_activity {
+    /**
+     * Overridden load_from_records to ensure that the overridden
+     * question_attempt class is being used in QUBA.
+     *
+     * @param $records
+     * @param $qubaid
+     * @return core_question_usage_by_activity
+     * @throws coding_exception
+     */
     public static function load_from_records($records, $qubaid) {
         $record = $records->current();
         while ($record->qubaid != $qubaid) {

@@ -28,8 +28,23 @@ namespace local_quizadditionalbehaviour\question;
 use local_quizadditionalbehaviour\question\question_engine_data_mapper as local_question_engine_data_mapper;
 use moodle_database;
 use question_engine as core_question_engine;
+use \question_usage_by_activity;
+use coding_exception;
+use dml_exception;
 
+/**
+ * Overridden question_engine class to force the use of an overridden question_engine_data_mapper.
+ */
 class question_engine extends core_question_engine {
+    /**
+     * Overridden to return the overridden quba.
+     *
+     * @param $qubaid
+     * @param moodle_database|null $db
+     * @return question_usage_by_activity
+     * @throws dml_exception;
+     * @throws coding_exception
+     */
     public static function load_questions_usage_by_activity($qubaid, moodle_database $db = null) {
         $dm = new local_question_engine_data_mapper($db);
         return $dm->load_questions_usage_by_activity($qubaid);

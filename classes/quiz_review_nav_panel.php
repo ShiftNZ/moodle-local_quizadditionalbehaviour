@@ -29,14 +29,26 @@ use mod_quiz_renderer;
 use quiz_review_nav_panel as core_quiz_review_nav_panel;
 use quiz_nav_question_button;
 use quiz_nav_section_heading;
+use coding_exception;
+use renderable;
 
+/**
+ * Overridden quiz review nav panel to add additional buttons,
+ */
 class quiz_review_nav_panel extends core_quiz_review_nav_panel {
+    /**
+     * Overridden get_question_buttons functions. If no additional behaviour is being used,
+     * revert to the core function otherwise do the non-core things.
+     *
+     * @return array|renderable[]
+     * @throws coding_exception
+     */
     public function get_question_buttons() {
         if (!$this->attemptobj->disablecorrect() || !$this->attemptobj->disableshowcorrectforstudent()) {
             // Do the core things.
             return parent::get_question_buttons();
         }
-        // Doing the non core things.
+        // Do the non-core things.
         $buttons = [];
         if ($this->attemptobj->disablecorrect()) {
             $qattempt = $this->attemptobj->get_last_complete_attempt();

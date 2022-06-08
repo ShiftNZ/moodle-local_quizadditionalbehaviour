@@ -30,7 +30,10 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/question/engine/renderer.php');
 
-// Todo: Rename local_quizadditionalbehaviour to theme_themename after it has been moved. See README.md.
+/**
+ * The renderer that needs to be copied and renamed into the theme, or patched in.
+ * Todo: Rename local_quizadditionalbehaviour to theme_themename after it has been moved. See README.md.
+ */
 class local_quizadditionalbehaviour_core_question_renderer extends \core_question_renderer {
     public function question(
             question_attempt $qa,

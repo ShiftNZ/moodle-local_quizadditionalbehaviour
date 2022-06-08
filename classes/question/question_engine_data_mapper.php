@@ -27,8 +27,20 @@ namespace local_quizadditionalbehaviour\question;
 
 use coding_exception;
 use question_engine_data_mapper as core_question_engine_data_mapper;
+use dml_exception;
+use local_quizadditionalbehaviour\question\question_usage_by_activity as local_question_usage_by_activity;
+use question_usage_by_activity;
 
+/**
+ * Overridden data_mapper to return an overridden quba.
+ */
 class question_engine_data_mapper extends core_question_engine_data_mapper {
+    /**
+     * @param $qubaid
+     * @return question_usage_by_activity
+     * @throws dml_exception
+     * @throws coding_exception
+     */
     public function load_questions_usage_by_activity($qubaid) {
         $records = $this->db->get_recordset_sql("
 SELECT
@@ -76,7 +88,7 @@ ORDER BY
             throw new coding_exception('Failed to load questions_usage_by_activity ' . $qubaid);
         }
 
-        $quba = question_usage_by_activity::load_from_records($records, $qubaid);
+        $quba = local_question_usage_by_activity::load_from_records($records, $qubaid);
         $records->close();
 
         return $quba;

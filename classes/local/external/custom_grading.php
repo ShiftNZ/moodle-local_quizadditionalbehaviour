@@ -37,8 +37,21 @@ use context_module;
 use context_user;
 use Throwable;
 use moodle_exception;
+use coding_exception;
+use dml_exception;
+use invalid_parameter_exception;
+use require_login_exception;
 
+/**
+ * External functions to help facilitate the teacher custom grading functionality.
+ */
 class custom_grading extends external_api {
+
+    /**
+     * The parameters for the "get" custom grading external service.
+     *
+     * @return external_function_parameters
+     */
     public static function get_parameters() : external_function_parameters {
         return new external_function_parameters([
             'attemptid' => new external_value(PARAM_INT, 'Attempt ID'),
@@ -46,6 +59,11 @@ class custom_grading extends external_api {
         ]);
     }
 
+    /**
+     * The structure of what the "get" custom grading external service returns.
+     *
+     * @return external_single_structure
+     */
     public static function get_returns() : external_single_structure {
         return new external_single_structure([
             'comment' => new external_value(PARAM_RAW, 'Returned comment'),
@@ -58,6 +76,18 @@ class custom_grading extends external_api {
         ]);
     }
 
+    /**
+     * The getting of the custom grading.
+     *
+     * @param int $attemptid
+     * @param int $slot
+     * @return array
+     * @throws coding_exception
+     * @throws dml_exception
+     * @throws invalid_parameter_exception
+     * @throws require_login_exception
+     * @throws moodle_exception
+     */
     public static function get(int $attemptid, int $slot) : array {
         global $CFG, $PAGE;
         require_once($CFG->dirroot.'/mod/quiz/locallib.php');
@@ -162,6 +192,10 @@ class custom_grading extends external_api {
         ];
     }
 
+    /**
+     * The parameters for the "set" custom grading external service.
+     * @return external_function_parameters
+     */
     public static function set_parameters() : external_function_parameters {
         return new external_function_parameters([
             'attemptid' => new external_value(PARAM_INT, 'Attempt ID'),
@@ -172,12 +206,29 @@ class custom_grading extends external_api {
         ]);
     }
 
+    /**
+     * The structure of what the "set" custom grading external service returns.
+     *
+     * @return external_single_structure
+     */
     public static function set_returns() : external_single_structure {
         return new external_single_structure([
             'result' => new external_value(PARAM_RAW, 'Returned result'),
         ]);
     }
 
+    /**
+     * Sets the custom grading. This actually saves the comment, grade,
+     * and or feedback for the question that is being graded by a grader.
+     *
+     * @param int $attemptid
+     * @param int $slot
+     * @param $comment
+     * @param int $commentformat
+     * @param $grade
+     * @return string[]
+     * @throws invalid_parameter_exception
+     */
     public static function set(int $attemptid, int $slot, $comment, int $commentformat, $grade) : array {
         global $CFG, $DB, $USER;
 
