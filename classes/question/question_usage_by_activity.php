@@ -38,8 +38,8 @@ class question_usage_by_activity extends core_question_usage_by_activity {
      * Overridden load_from_records to ensure that the overridden
      * question_attempt class is being used in QUBA.
      *
-     * @param $records
-     * @param $qubaid
+     * @param Iterator $records Raw records loaded from the database.
+     * @param int $qubaid The id of the question usage we are loading.
      * @return core_question_usage_by_activity
      * @throws coding_exception
      */

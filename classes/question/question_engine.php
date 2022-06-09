@@ -39,8 +39,8 @@ class question_engine extends core_question_engine {
     /**
      * Overridden to return the overridden quba.
      *
-     * @param $qubaid
-     * @param moodle_database|null $db
+     * @param int $qubaid the id of the usage to load
+     * @param moodle_database|null $db a database connection. Defaults to global $DB.
      * @return question_usage_by_activity
      * @throws dml_exception;
      * @throws coding_exception

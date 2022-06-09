@@ -37,11 +37,11 @@ class local_quizadditionalbehaviour_core_question_renderer extends \core_questio
     /**
      * Overridden question render.
      *
-     * @param question_attempt $qa
-     * @param qbehaviour_renderer $behaviouroutput
-     * @param qtype_renderer $qtoutput
-     * @param question_display_options $options
-     * @param $number
+     * @param question_attempt $qa A question_attempt object. We expect this to be the overridden one.
+     * @param qbehaviour_renderer $behaviouroutput The question behaviour renderer.
+     * @param qtype_renderer $qtoutput The question type renderer.
+     * @param question_display_options $options The question_display_options. We expect this to be the overridden one.
+     * @param int $number The number of the question.
      * @return HTML|string
      * @throws coding_exception
      * @throws moodle_exception
@@ -179,7 +179,7 @@ class local_quizadditionalbehaviour_core_question_renderer extends \core_questio
                             $options->manualcommentlink ? $behaviouroutput->manual_comment_fields($qa, $options) : ''
                         ),
                     ];
-                    $output .= $this->render_from_template('core_question/grading_grade', $context);
+                    $output .= $this->render_from_template('local_quizadditionalbehaviour/grading_grade', $context);
                 }
             } else {
                 $output .= html_writer::nonempty_tag('div',

@@ -43,9 +43,9 @@ class question_attempt extends core_question_attempt {
     /**
      * Render the overridden things with the overriden display options etc.
      *
-     * @param $options
-     * @param $number
-     * @param $page
+     * @param \question_display_options $options controls how the question is rendered.
+     * @param string|null $number The question number to display.
+     * @param moodle_page|null $page the page the question is being rendered to. (Optional, defaults to $PAGE).
      * @return string
      * @throws coding_exception
      */

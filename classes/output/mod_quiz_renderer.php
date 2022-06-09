@@ -49,8 +49,8 @@ class mod_quiz_renderer extends core_mod_quiz_renderer {
     /**
      * Use the overridden quiz_attempt object on the summary page.
      *
-     * @param $attemptobj
-     * @param $displayoptions
+     * @param quiz_attempt $attemptobj The quiz attempt object.
+     * @param core_mod_quiz_display_options $displayoptions The quiz display options.
      * @return string
      */
     public function summary_page($attemptobj, $displayoptions) {
@@ -61,8 +61,8 @@ class mod_quiz_renderer extends core_mod_quiz_renderer {
     /**
      * Use the overridden quiz_attempt object in the summary table.
      *
-     * @param $attemptobj
-     * @param $displayoptions
+     * @param quiz_attempt $attemptobj The overridden quiz_attempt that has our custom stuff.
+     * @param core_mod_quiz_display_options $displayoptions The quiz_display_options. This gets overridden anyway.
      * @return string
      * @throws dml_exception
      * @throws coding_exception
@@ -156,13 +156,13 @@ class mod_quiz_renderer extends core_mod_quiz_renderer {
     /**
      * Use the overridden quiz_attempt object in the attempt page.
      *
-     * @param $attemptobj
-     * @param $page
-     * @param $accessmanager
-     * @param $messages
-     * @param $slots
-     * @param $id
-     * @param $nextpage
+     * @param quiz_attempt $attemptobj Instance of quiz_attempt. Gets swapped here with our version.
+     * @param int $page Current page number.
+     * @param \quiz_access_manager $accessmanager Instance of quiz_access_manager.
+     * @param array $messages An array of messages.
+     * @param array $slots Contains an array of integers that relate to questions.
+     * @param int $id The ID of an attempt.
+     * @param int $nextpage The number of the next page.
      * @return string
      */
     public function attempt_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage) {
@@ -173,11 +173,11 @@ class mod_quiz_renderer extends core_mod_quiz_renderer {
     /**
      * Use the overridden quiz_attempt object in the attempt form.
      *
-     * @param $attemptobj
-     * @param $page
-     * @param $slots
-     * @param $id
-     * @param $nextpage
+     * @param quiz_attempt $attemptobj The quiz_attempt object. This gets replaced with our version.
+     * @param int $page Current page number.
+     * @param array $slots Array of integers relating to questions.
+     * @param int $id The ID of the attempt.
+     * @param int $nextpage Next page number
      * @return string
      */
     public function attempt_form($attemptobj, $page, $slots, $id, $nextpage) {
@@ -189,13 +189,13 @@ class mod_quiz_renderer extends core_mod_quiz_renderer {
      * Use the overridden quiz_attempt object to get the
      * overridden display options on the review page.
      *
-     * @param core_quiz_attempt $attemptobj
-     * @param $slots
-     * @param $page
-     * @param $showall
-     * @param $lastpage
-     * @param core_mod_quiz_display_options $displayoptions
-     * @param $summarydata
+     * @param core_quiz_attempt $attemptobj an instance of quiz_attempt.
+     * @param array $slots an array of integers relating to questions.
+     * @param int $page the current page number.
+     * @param bool $showall whether to show entire attempt on one page.
+     * @param bool $lastpage if true the current page is the last page.
+     * @param core_mod_quiz_display_options $displayoptions instance of mod_quiz_display_options.
+     * @param array $summarydata contains all table data.
      * @return string
      * @throws dml_exception
      */
@@ -216,7 +216,7 @@ class mod_quiz_renderer extends core_mod_quiz_renderer {
     /**
      * Use the overridden quiz_attempt object and the overridden nav panels when rendering the nav panel.
      *
-     * @param core_quiz_nav_panel_base $panel
+     * @param core_quiz_nav_panel_base $panel instance of quiz_nav_panel_base.
      * @return string
      * @throws coding_exception
      * @throws dml_exception

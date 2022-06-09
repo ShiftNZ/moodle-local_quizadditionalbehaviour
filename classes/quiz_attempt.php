@@ -42,6 +42,7 @@ use mod_quiz_display_options;
 use question_display_options;
 use lang_string;
 use dml_transaction_exception;
+use moodle_url;
 
 /**
  * Overridden quiz_attempt class to add additional functionality for this additional quiz behaviour.
@@ -50,11 +51,11 @@ class quiz_attempt extends core_quiz_attempt {
     /**
      * Quiz attempt constructor that does the core things and then non-core things.
      *
-     * @param $attempt
-     * @param $quiz
-     * @param $cm
-     * @param $course
-     * @param bool $loadquestions
+     * @param object $attempt the row of the quiz_attempts table.
+     * @param object $quiz the quiz object for this attempt and user.
+     * @param object $cm the course_module object for this quiz.
+     * @param object $course the row from the course table for the course we belong to.
+     * @param bool $loadquestions this is always set to false in our version of this object.
      * @throws coding_exception
      * @throws dml_exception
      */
@@ -68,7 +69,7 @@ class quiz_attempt extends core_quiz_attempt {
     /**
      * Override display options if doing non-core things.
      *
-     * @param $reviewing
+     * @param bool $reviewing true for options when reviewing, false for when attempting.
      * @return mod_quiz_display_options|question_display_options|null
      * @throws dml_exception
      */
@@ -101,8 +102,8 @@ class quiz_attempt extends core_quiz_attempt {
     /**
      * Get question status if using additional behaviour otherwise return the core things.
      *
-     * @param $slot
-     * @param $showcorrectness
+     * @param int $slot the number used to identify this question within this attempt.
+     * @param bool $showcorrectness Whether right/partial/wrong states should be distinguished.
      * @return lang_string|string
      * @throws coding_exception
      */
@@ -119,13 +120,14 @@ class quiz_attempt extends core_quiz_attempt {
      * Overridden render_question_helper. The customisations are only called if the quiz is
      * configured to do so otherwise the core things are done.
      *
-     * @param $slot
-     * @param $reviewing
-     * @param $thispageurl
-     * @param mod_quiz_renderer $renderer
-     * @param $seq
+     * @param int $slot identifies the question in the attempt.
+     * @param bool $reviewing is the question being printed on an attempt or a review page.
+     * @param moodle_url $thispageurl the URL of the page this question is being printed on.
+     * @param mod_quiz_renderer $renderer the quiz renderer.
+     * @param int|null $seq the seq number of the past state to display.
      * @return string
      * @throws coding_exception
+     * @throws dml_exception
      */
     protected function render_question_helper($slot, $reviewing, $thispageurl, mod_quiz_renderer $renderer, $seq) {
         $useparent = true;
@@ -226,11 +228,14 @@ class quiz_attempt extends core_quiz_attempt {
     /**
      * Ensure that any previously answered correctly questions are shifted to the new attempt.
      *
-     * @param $timestamp
-     * @param $processsubmitted
-     * @param $timefinish
+     * @param int $timestamp the time to record as last modified time.
+     * @param bool $processsubmitted if true, and question responses in the current POST request are
+     *          stored to be graded, before the attempt is finished.
+     * @param ?int $timefinish if set, use this as the finish time for the attempt.
+     *          (otherwise use $timestamp as the finish time as well).
      * @return void
      * @throws coding_exception
+     * @throws dml_transaction_exception
      */
     public function process_finish($timestamp, $processsubmitted, $timefinish = null) {
         // Do the overriden things.
@@ -248,7 +253,7 @@ class quiz_attempt extends core_quiz_attempt {
     /**
      * Ensure that the overridden quiz_attempt object is returned.
      *
-     * @param $attemptid
+     * @param int $attemptid the attempt id.
      * @return quiz_attempt|core_quiz_attempt
      */
     public static function create($attemptid) {
@@ -259,7 +264,7 @@ class quiz_attempt extends core_quiz_attempt {
      * Ensures that an overridden quiz_attempt object that has the additional behaviour
      * working is returned.
      *
-     * @param $conditions
+     * @param array $conditions passed to $DB->get_record('quiz_attempts', $conditions).
      * @return quiz_attempt
      * @throws coding_exception
      * @throws dml_exception
@@ -282,10 +287,10 @@ class quiz_attempt extends core_quiz_attempt {
      * Manually grades a question. This is for quiz_attempts where a question was previously
      * marked as correct.
      *
-     * @param $slot
-     * @param $comment
-     * @param $mark
-     * @param $commentformat
+     * @param int $slot the number used to identify this question within this attempt.
+     * @param string $comment the grader comment for this manually graded question.
+     * @param number $mark the mark that is being assigned. Can be null to just to add a comment.
+     * @param int $commentformat one of the FORMAT_... constants. The format of the $comment.
      * @return void
      * @throws dml_transaction_exception
      * @throws coding_exception
@@ -350,6 +355,7 @@ class quiz_attempt extends core_quiz_attempt {
      *
      * @return array
      * @throws coding_exception
+     * @throws dml_exception
      */
     public function get_last_complete_attempt() {
         if (!$this->disablecorrect()) {

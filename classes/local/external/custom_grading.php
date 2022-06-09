@@ -79,8 +79,8 @@ class custom_grading extends external_api {
     /**
      * The getting of the custom grading.
      *
-     * @param int $attemptid
-     * @param int $slot
+     * @param int $attemptid The id of the quiz attempt to get the grade for.
+     * @param int $slot The number used to identify the question in this quiz attempt.
      * @return array
      * @throws coding_exception
      * @throws dml_exception
@@ -221,11 +221,11 @@ class custom_grading extends external_api {
      * Sets the custom grading. This actually saves the comment, grade,
      * and or feedback for the question that is being graded by a grader.
      *
-     * @param int $attemptid
-     * @param int $slot
-     * @param $comment
-     * @param int $commentformat
-     * @param $grade
+     * @param int $attemptid The quiz attempt id.
+     * @param int $slot The number used to identify the question in this attempt.
+     * @param string $comment Grader comment.
+     * @param int $commentformat One of the FORMAT_... constants. The format of $comment.
+     * @param string|int $grade The grade given to this question in this quiz attempt.
      * @return string[]
      * @throws invalid_parameter_exception
      */
