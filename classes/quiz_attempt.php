@@ -54,7 +54,7 @@ class quiz_attempt extends core_quiz_attempt {
      * @param $quiz
      * @param $cm
      * @param $course
-     * @param $loadquestions
+     * @param bool $loadquestions
      * @throws coding_exception
      * @throws dml_exception
      */
