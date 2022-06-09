@@ -40,13 +40,33 @@ use html_table_cell;
 use html_writer;
 use question_display_options;
 use coding_exception;
+use dml_exception;
 
+/**
+ * Overridden mod quiz renderer to inject all the overridden quiz and question objects.
+ */
 class mod_quiz_renderer extends core_mod_quiz_renderer {
+    /**
+     * Use the overridden quiz_attempt object on the summary page.
+     *
+     * @param $attemptobj
+     * @param $displayoptions
+     * @return string
+     */
     public function summary_page($attemptobj, $displayoptions) {
         $attemptobj = quiz_attempt::create($attemptobj->get_attemptid());
         return parent::summary_page($attemptobj, $displayoptions);
     }
 
+    /**
+     * Use the overridden quiz_attempt object in the summary table.
+     *
+     * @param $attemptobj
+     * @param $displayoptions
+     * @return string
+     * @throws dml_exception
+     * @throws coding_exception
+     */
     public function summary_table($attemptobj, $displayoptions) {
         $attemptobj = quiz_attempt::create($attemptobj->get_attemptid());
         $displayoptions = $attemptobj->get_display_options(false);
@@ -133,16 +153,52 @@ class mod_quiz_renderer extends core_mod_quiz_renderer {
         // Never reached.
     }
 
+    /**
+     * Use the overridden quiz_attempt object in the attempt page.
+     *
+     * @param $attemptobj
+     * @param $page
+     * @param $accessmanager
+     * @param $messages
+     * @param $slots
+     * @param $id
+     * @param $nextpage
+     * @return string
+     */
     public function attempt_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage) {
         $attemptobj = quiz_attempt::create($attemptobj->get_attemptid());
         return parent::attempt_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage);
     }
 
+    /**
+     * Use the overridden quiz_attempt object in the attempt form.
+     *
+     * @param $attemptobj
+     * @param $page
+     * @param $slots
+     * @param $id
+     * @param $nextpage
+     * @return string
+     */
     public function attempt_form($attemptobj, $page, $slots, $id, $nextpage) {
         $attemptobj = quiz_attempt::create($attemptobj->get_attemptid());
         return parent::attempt_form($attemptobj, $page, $slots, $id, $nextpage);
     }
 
+    /**
+     * Use the overridden quiz_attempt object to get the
+     * overridden display options on the review page.
+     *
+     * @param core_quiz_attempt $attemptobj
+     * @param $slots
+     * @param $page
+     * @param $showall
+     * @param $lastpage
+     * @param core_mod_quiz_display_options $displayoptions
+     * @param $summarydata
+     * @return string
+     * @throws dml_exception
+     */
     public function review_page(
             core_quiz_attempt $attemptobj,
             $slots,
@@ -157,6 +213,14 @@ class mod_quiz_renderer extends core_mod_quiz_renderer {
         return parent::review_page($attemptobj, $slots, $page, $showall, $lastpage, $displayoptions, $summarydata);
     }
 
+    /**
+     * Use the overridden quiz_attempt object and the overridden nav panels when rendering the nav panel.
+     *
+     * @param core_quiz_nav_panel_base $panel
+     * @return string
+     * @throws coding_exception
+     * @throws dml_exception
+     */
     public function navigation_panel(core_quiz_nav_panel_base $panel) {
         $attempt = required_param('attempt', PARAM_INT);
         $page = optional_param('page', 0, PARAM_INT);

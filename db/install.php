@@ -26,7 +26,7 @@
 /**
  * Install the plugin. Add additional fields to the quiz table for
  * this additional behaviour without modifying the install.xml.
- * 
+ *
  * @return void
  * @throws ddl_exception
  * @throws ddl_table_missing_exception

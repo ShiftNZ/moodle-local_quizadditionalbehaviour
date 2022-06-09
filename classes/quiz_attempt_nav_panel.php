@@ -29,8 +29,20 @@ use mod_quiz_renderer;
 use quiz_nav_section_heading;
 use quiz_nav_question_button;
 use quiz_attempt_nav_panel as core_quiz_attempt_nav_panel;
+use coding_exception;
+use renderable;
 
+/**
+ * Overridden quiz_attempt_navpanel.
+ */
 class quiz_attempt_nav_panel extends core_quiz_attempt_nav_panel {
+    /**
+     * Gets the quiz_attempt nav panel buttons. Does non-core things if
+     * non-core things are set and enabled.
+     *
+     * @return array|renderable[]
+     * @throws coding_exception
+     */
     public function get_question_buttons() {
         if (!$this->attemptobj->disablecorrect() || !$this->attemptobj->disableshowcorrectforstudent()) {
             // Do the core things.

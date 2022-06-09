@@ -56,6 +56,7 @@ class quiz_attempt extends core_quiz_attempt {
      * @param $course
      * @param $loadquestions
      * @throws coding_exception
+     * @throws dml_exception
      */
     public function __construct($attempt, $quiz, $cm, $course, $loadquestions = true) {
         // Need to do self quba.

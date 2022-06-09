@@ -36,6 +36,8 @@ use question_usage_by_activity;
  */
 class question_engine_data_mapper extends core_question_engine_data_mapper {
     /**
+     * Overridden load function so that the overridden quba can be called.
+     *
      * @param $qubaid
      * @return question_usage_by_activity
      * @throws dml_exception

@@ -17,7 +17,7 @@
 /**
  * Render overrides for local_quizadditionalbehaviour.
  *
- * Todo: This file must be copied into theme/renderers/question_renderer. See README.md.
+ * Todo: This file must be copied into theme/renderers/question_renderer, and the class renamed. See README.md.
  *
  * @package     local_quizadditionalbehaviour
  * @author      Donald Barrett <donaldb@skills.org.nz>
@@ -32,9 +32,20 @@ require_once($CFG->dirroot.'/question/engine/renderer.php');
 
 /**
  * The renderer that needs to be copied and renamed into the theme, or patched in.
- * Todo: Rename local_quizadditionalbehaviour to theme_themename after it has been moved. See README.md.
  */
 class local_quizadditionalbehaviour_core_question_renderer extends \core_question_renderer {
+    /**
+     * Overridden question render.
+     *
+     * @param question_attempt $qa
+     * @param qbehaviour_renderer $behaviouroutput
+     * @param qtype_renderer $qtoutput
+     * @param question_display_options $options
+     * @param $number
+     * @return HTML|string
+     * @throws coding_exception
+     * @throws moodle_exception
+     */
     public function question(
             question_attempt $qa,
             qbehaviour_renderer $behaviouroutput,
