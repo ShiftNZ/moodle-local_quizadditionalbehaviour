@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for local_quizadditionalbehaviour.
+ * Upgrade script for local_quizadditionalbehaviour.
  *
  * @package     local_quizadditionalbehaviour
  * @author      Donald Barrett <donaldb@skills.org.nz>
@@ -26,13 +26,29 @@
 // No direct access.
 defined('MOODLE_INTERNAL') || die();
 
-// This plugin requires Moodle 3.9.
-$plugin->requires = 2020061500;
-
-// Plugin details.
-$plugin->component = 'local_quizadditionalbehaviour';
-$plugin->version = 2022032406;
-$plugin->release = 'v3.9.6';
-
-// Plugin status details.
-$plugin->maturity = MATURITY_STABLE;
+/**
+ * Upgrade function.
+ *
+ * @param int $oldversion $plugin->version number.
+ * @return void
+ * @throws coding_exception
+ * @throws dml_exception
+ * @throws downgrade_exception
+ * @throws upgrade_exception
+ */
+function xmldb_local_quizadditionalbehaviour_upgrade($oldversion) {
+    global $DB;
+    if ($oldversion < 2022032406) {
+        // Remove the old "adv" settings.
+        $advancedsettings = [
+            'customgrading_adv',
+            'disablecorrect_adv',
+            'disablecorrectshowcorrect_adv',
+            'disableshowcorrectforstudent_adv'
+        ];
+        list($sqlwhere, $sqlparams) = $DB->get_in_or_equal($advancedsettings);
+        $sqlparams[] = 'quiz';
+        $DB->delete_records_select('config_plugins', "name $sqlwhere AND plugin = ?", $sqlparams);
+        upgrade_plugin_savepoint(true, 2022032406, 'local', 'quizadditionalbehaviour');
+    }
+}
