@@ -9,7 +9,8 @@ The additional behaviours are:
 2. Hide or show the correctly answered question from the immediate previous attempt.
 3. Custom grading functionality.
 
-These customisations were pulled from a bunch of core files that were modified in order to achieve this behaviour.
+These customisations were pulled from a bunch of core files that were modified in order to achieve this behaviour. I just put the things in
+the right places.
 
 The local plugin is used to override the core quiz and question behaviour classes and renderers so that custom functionality can happen.
 
@@ -43,6 +44,13 @@ the name of the theme without the 'theme_' prefix.
 Note: The language strings don't need to be updated to theme_themename because all the language strings are defined in this local plugin.
 
 Finally, purge the caches and it "should" work :)
+
+History, acknowledgement and appreciation
+=========================================
+
+Thanks to the previous people or the person whose name may start with a 'Chr' and ends with 'is Clark'.
+
+Many many thanks Chris Clark and anyone else who has contributed to these customisations to make this happen.
 
 License
 =======

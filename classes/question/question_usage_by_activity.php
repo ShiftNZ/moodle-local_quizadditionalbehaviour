@@ -25,15 +25,24 @@
 
 namespace local_quizadditionalbehaviour\question;
 
-// No direct access.
-defined('MOODLE_INTERNAL') || die();
-
 use question_usage_by_activity as core_question_usage_by_activity;
 use question_engine_unit_of_work;
 use coding_exception;
 use context;
 
+/**
+ * Overridden quba to use the overridden question_attempt class.
+ */
 class question_usage_by_activity extends core_question_usage_by_activity {
+    /**
+     * Overridden load_from_records to ensure that the overridden
+     * question_attempt class is being used in QUBA.
+     *
+     * @param Iterator $records Raw records loaded from the database.
+     * @param int $qubaid The id of the question usage we are loading.
+     * @return core_question_usage_by_activity
+     * @throws coding_exception
+     */
     public static function load_from_records($records, $qubaid) {
         $record = $records->current();
         while ($record->qubaid != $qubaid) {

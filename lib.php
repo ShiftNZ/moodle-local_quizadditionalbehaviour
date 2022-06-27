@@ -23,9 +23,15 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// No direct access.
-defined('MOODLE_INTERNAL') || die();
-
+/**
+ * Add additional form elements to any course module edit form.
+ *
+ * @param moodleform $formwrapper
+ * @param MoodleQuickForm $mform
+ * @return void
+ * @throws coding_exception
+ * @throws dml_exception
+ */
 function local_quizadditionalbehaviour_coursemodule_standard_elements(\moodleform $formwrapper, \MoodleQuickForm $mform): void {
     if (!$formwrapper instanceof mod_quiz_mod_form) {
         // Not a quiz.
@@ -53,7 +59,9 @@ function local_quizadditionalbehaviour_coursemodule_standard_elements(\moodlefor
     // Disable already correct questions and show the correct answer.
     $visiblename = get_string('disablealreadycorrectquestions_showcorrect', 'local_quizadditionalbehaviour');
     $mform->addElement('selectyesno', 'disablecorrectshowcorrect', $visiblename);
-    $mform->addHelpButton('disablecorrectshowcorrect', 'disablealreadycorrectquestions_showcorrect', 'local_quizadditionalbehaviour');
+    $mform->addHelpButton(
+        'disablecorrectshowcorrect', 'disablealreadycorrectquestions_showcorrect', 'local_quizadditionalbehaviour'
+    );
     $mform->setAdvanced('disablecorrectshowcorrect', $quizconfig->disablecorrectshowcorrect_adv);
     $mform->setDefault('disablecorrectshowcorrect', $quizconfig->disablecorrectshowcorrect);
 

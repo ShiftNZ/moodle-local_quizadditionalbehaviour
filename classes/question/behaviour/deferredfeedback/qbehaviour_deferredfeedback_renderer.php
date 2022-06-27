@@ -25,10 +25,10 @@
 
 namespace local_quizadditionalbehaviour\question\behaviour\deferredfeedback;
 
-// No direct access.
-defined('MOODLE_INTERNAL') || die();
-
 use qbehaviour_deferredfeedback_renderer as core_qbehaviour_deferredfeedback_renderer;
 
+/**
+ * * Overridden deferred feedback renderer with no implementation. I am not entirely sure that this override is necessary.
+ */
 class qbehaviour_deferredfeedback_renderer extends core_qbehaviour_deferredfeedback_renderer {
 }

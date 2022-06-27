@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Quiz things for local_quizadditionalbehaviour.
+ * Privacy subsystem implementation for local_quizadditionalbehaviour.
  *
  * @package     local_quizadditionalbehaviour
  * @author      Donald Barrett <donaldb@skills.org.nz>
@@ -23,14 +23,22 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_quizadditionalbehaviour;
+namespace local_quizadditionalbehaviour\privacy;
 
-// No direct access.
-defined('MOODLE_INTERNAL') || die();
+use core_privacy\local\metadata\null_provider;
 
-class quiz extends \quiz {
-    protected $lastattempt;
-    public function __construct($quiz, $cm, $course, $getcontext = true) {
-        parent::__construct($quiz, $cm, $course, $getcontext);
+/**
+ * Privacy subsystem for local_quizadditionalbehaviour.
+ */
+class provider implements null_provider {
+
+    /**
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
+     *
+     * @return string
+     */
+    public static function get_reason() : string {
+        return 'privacy:metadata';
     }
 }

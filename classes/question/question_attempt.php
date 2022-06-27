@@ -25,11 +25,9 @@
 
 namespace local_quizadditionalbehaviour\question;
 
-// No direct access.
-defined('MOODLE_INTERNAL') || die();
-
 use question_attempt as core_question_attempt;
-use local_quizadditionalbehaviour\question\behaviour\deferredfeedback\qbehaviour_deferredfeedback as local_qbehaviour_deferredfeedback;
+use local_quizadditionalbehaviour\question\behaviour\deferredfeedback\qbehaviour_deferredfeedback
+        as local_qbehaviour_deferredfeedback;
 use question_usage_observer;
 use question_bank;
 use question_engine;
@@ -38,7 +36,19 @@ use Iterator;
 use coding_exception;
 use Exception;
 
+/**
+ * Overridden question_attempt class.
+ */
 class question_attempt extends core_question_attempt {
+    /**
+     * Render the overridden things with the overriden display options etc.
+     *
+     * @param \question_display_options $options controls how the question is rendered.
+     * @param string|null $number The question number to display.
+     * @param moodle_page|null $page the page the question is being rendered to. (Optional, defaults to $PAGE).
+     * @return string
+     * @throws coding_exception
+     */
     public function render($options, $number, $page = null) {
         $this->ensure_question_initialised();
         if (is_null($page)) {
@@ -60,6 +70,7 @@ class question_attempt extends core_question_attempt {
      * @param question_usage_observer $observer the observer that will be monitoring changes in us.
      * @param string $preferredbehaviour the preferred behaviour under which we are operating.
      * @return question_attempt The newly constructed question_attempt.
+     * @throws coding_exception
      */
     public static function load_from_records($records, $questionattemptid,
         question_usage_observer $observer, $preferredbehaviour) {

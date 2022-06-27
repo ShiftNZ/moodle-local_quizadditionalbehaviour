@@ -34,32 +34,32 @@ if ($hassiteconfig) {
     // Container for the settings.
     $settings = [];
 
-    $settings[] = new admin_setting_configcheckbox_with_advanced(
+    $settings[] = new admin_setting_configcheckbox(
         'quiz/customgrading',
         get_string('customgrading', $componentname),
         get_string('customgrading_help', $componentname),
-        ['value' => 0, 'adv' => false]
+        '0'
     );
 
-    $settings[] = new admin_setting_configcheckbox_with_advanced(
+    $settings[] = new admin_setting_configcheckbox(
         'quiz/disablecorrect',
         get_string('disablealreadycorrectquestions', $componentname),
         get_string('disablealreadycorrectquestions_help', $componentname),
-        ['value' => 0, 'adv' => true]
+        '0'
     );
 
-    $settings[] = new admin_setting_configcheckbox_with_advanced(
+    $settings[] = new admin_setting_configcheckbox(
         'quiz/disablecorrectshowcorrect',
         get_string('disablealreadycorrectquestions_showcorrect', $componentname),
         get_string('disablealreadycorrectquestions_showcorrect_help', $componentname),
-        ['value' => 0, 'adv' => true]
+        '0'
     );
 
-    $settings[] = new admin_setting_configcheckbox_with_advanced(
+    $settings[] = new admin_setting_configcheckbox(
         'quiz/disableshowcorrectforstudent',
         get_string('disableshowcorrectforstudent', $componentname),
         get_string('disableshowcorrectforstudent_help', $componentname),
-        ['value' => 0, 'adv' => true]
+        '0'
     );
 
     // Make the settings page and add all the settings.

@@ -1,9 +1,9 @@
 diff --git a/theme/boost/classes/output/mod_quiz_renderer.php b/theme/boost/classes/output/mod_quiz_renderer.php
 new file mode 100644
-index 0000000000..675deaa84e
+index 0000000000..e4206998b5
 --- /dev/null
 +++ b/theme/boost/classes/output/mod_quiz_renderer.php
-@@ -0,0 +1,178 @@
+@@ -0,0 +1,239 @@
 +<?php
 +// This file is part of Moodle - http://moodle.org/
 +//
@@ -31,7 +31,6 @@ index 0000000000..675deaa84e
 +
 +namespace theme_boost\output;
 +
-+// No direct access.
 +use local_quizadditionalbehaviour\quiz;
 +use local_quizadditionalbehaviour\quiz_attempt;
 +use local_quizadditionalbehaviour\quiz_attempt_nav_panel;
@@ -47,15 +46,33 @@ index 0000000000..675deaa84e
 +use html_writer;
 +use question_display_options;
 +use coding_exception;
++use dml_exception;
 +
-+defined('MOODLE_INTERNAL') || die();
-+
++/**
++ * Overridden mod quiz renderer to inject all the overridden quiz and question objects.
++ */
 +class mod_quiz_renderer extends core_mod_quiz_renderer {
++    /**
++     * Use the overridden quiz_attempt object on the summary page.
++     *
++     * @param quiz_attempt $attemptobj The quiz attempt object.
++     * @param core_mod_quiz_display_options $displayoptions The quiz display options.
++     * @return string
++     */
 +    public function summary_page($attemptobj, $displayoptions) {
 +        $attemptobj = quiz_attempt::create($attemptobj->get_attemptid());
 +        return parent::summary_page($attemptobj, $displayoptions);
 +    }
 +
++    /**
++     * Use the overridden quiz_attempt object in the summary table.
++     *
++     * @param quiz_attempt $attemptobj The overridden quiz_attempt that has our custom stuff.
++     * @param core_mod_quiz_display_options $displayoptions The quiz_display_options. This gets overridden anyway.
++     * @return string
++     * @throws dml_exception
++     * @throws coding_exception
++     */
 +    public function summary_table($attemptobj, $displayoptions) {
 +        $attemptobj = quiz_attempt::create($attemptobj->get_attemptid());
 +        $displayoptions = $attemptobj->get_display_options(false);
@@ -142,16 +159,52 @@ index 0000000000..675deaa84e
 +        // Never reached.
 +    }
 +
++    /**
++     * Use the overridden quiz_attempt object in the attempt page.
++     *
++     * @param quiz_attempt $attemptobj Instance of quiz_attempt. Gets swapped here with our version.
++     * @param int $page Current page number.
++     * @param \quiz_access_manager $accessmanager Instance of quiz_access_manager.
++     * @param array $messages An array of messages.
++     * @param array $slots Contains an array of integers that relate to questions.
++     * @param int $id The ID of an attempt.
++     * @param int $nextpage The number of the next page.
++     * @return string
++     */
 +    public function attempt_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage) {
 +        $attemptobj = quiz_attempt::create($attemptobj->get_attemptid());
 +        return parent::attempt_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage);
 +    }
 +
++    /**
++     * Use the overridden quiz_attempt object in the attempt form.
++     *
++     * @param quiz_attempt $attemptobj The quiz_attempt object. This gets replaced with our version.
++     * @param int $page Current page number.
++     * @param array $slots Array of integers relating to questions.
++     * @param int $id The ID of the attempt.
++     * @param int $nextpage Next page number
++     * @return string
++     */
 +    public function attempt_form($attemptobj, $page, $slots, $id, $nextpage) {
 +        $attemptobj = quiz_attempt::create($attemptobj->get_attemptid());
 +        return parent::attempt_form($attemptobj, $page, $slots, $id, $nextpage);
 +    }
 +
++    /**
++     * Use the overridden quiz_attempt object to get the
++     * overridden display options on the review page.
++     *
++     * @param core_quiz_attempt $attemptobj an instance of quiz_attempt.
++     * @param array $slots an array of integers relating to questions.
++     * @param int $page the current page number.
++     * @param bool $showall whether to show entire attempt on one page.
++     * @param bool $lastpage if true the current page is the last page.
++     * @param core_mod_quiz_display_options $displayoptions instance of mod_quiz_display_options.
++     * @param array $summarydata contains all table data.
++     * @return string
++     * @throws dml_exception
++     */
 +    public function review_page(
 +            core_quiz_attempt $attemptobj,
 +            $slots,
@@ -166,6 +219,14 @@ index 0000000000..675deaa84e
 +        return parent::review_page($attemptobj, $slots, $page, $showall, $lastpage, $displayoptions, $summarydata);
 +    }
 +
++    /**
++     * Use the overridden quiz_attempt object and the overridden nav panels when rendering the nav panel.
++     *
++     * @param core_quiz_nav_panel_base $panel instance of quiz_nav_panel_base.
++     * @return string
++     * @throws coding_exception
++     * @throws dml_exception
++     */
 +    public function navigation_panel(core_quiz_nav_panel_base $panel) {
 +        $attempt = required_param('attempt', PARAM_INT);
 +        $page = optional_param('page', 0, PARAM_INT);
@@ -182,13 +243,13 @@ index 0000000000..675deaa84e
 +        return parent::navigation_panel($panel);
 +    }
 +}
-\ No newline at end of file
+
 diff --git a/theme/boost/renderers.php b/theme/boost/renderers.php
 new file mode 100644
-index 0000000000..4614541cbf
+index 0000000000..3a071032a1
 --- /dev/null
 +++ b/theme/boost/renderers.php
-@@ -0,0 +1,166 @@
+@@ -0,0 +1,201 @@
 +<?php
 +// This file is part of Moodle - http://moodle.org/
 +//
@@ -219,13 +280,29 @@ index 0000000000..4614541cbf
 +
 +require_once($CFG->dirroot.'/question/engine/renderer.php');
 +
++/**
++ * The renderer that needs to be copied and renamed into the theme, or patched in.
++ */
 +class theme_boost_core_question_renderer extends \core_question_renderer {
++    /**
++     * Overridden question render.
++     *
++     * @param question_attempt $qa A question_attempt object. We expect this to be the overridden one.
++     * @param qbehaviour_renderer $behaviouroutput The question behaviour renderer.
++     * @param qtype_renderer $qtoutput The question type renderer.
++     * @param question_display_options $options The question_display_options. We expect this to be the overridden one.
++     * @param int $number The number of the question.
++     * @return HTML|string
++     * @throws coding_exception
++     * @throws moodle_exception
++     */
 +    public function question(
 +        question_attempt $qa,
 +        qbehaviour_renderer $behaviouroutput,
 +        qtype_renderer $qtoutput,
 +        question_display_options $options,
-+        $number) {
++        $number
++    ) {
 +        // Custom question rendering.
 +        if (isset($options->displayAnswerOnly) && $options->displayAnswerOnly) {
 +            return $this->formulation($qa, $behaviouroutput, $qtoutput, $options);
@@ -249,48 +326,59 @@ index 0000000000..4614541cbf
 +            ]);
 +        } else {
 +            // This is part of the original working.
-+            $output .= html_writer::start_tag('div', array(
++            $output .= html_writer::start_tag('div', [
 +                'id' => $qa->get_outer_question_div_unique_id(),
-+                'class' => implode(' ', array(
++                'class' => implode(' ', [
 +                    'que',
 +                    $qa->get_question(false)->get_type_name(),
 +                    $qa->get_behaviour_name(),
 +                    $stateclass,
-+                )),
-+            ));
++                ]),
++            ]);
 +        }
 +
 +        if (isset($options->passed)) {
-+            $output .= html_writer::start_tag('div', array('class' => 'info'));
++            $output .= html_writer::start_tag('div', ['class' => 'info']);
 +            $output .= '';
 +            $output .= $this->number($number);
++            // Do not rename the language string component here.
 +            $output .= html_writer::tag('div', get_string('previouslycompleted', 'local_quizadditionalbehaviour'),
-+                array('class' => 'state'));
++                ['class' => 'state']);
 +            $output .= $this->edit_question_link($qa, $options);
 +            $output .= html_writer::end_tag('div');
 +        } else {
 +            $output .= html_writer::tag('div',
 +                $this->info($qa, $behaviouroutput, $qtoutput, $options, $number),
-+                array('class' => 'info'));
++                ['class' => 'info']);
 +        }
 +
-+        $output .= html_writer::start_tag('div', array('class' => 'content'));
++        $output .= html_writer::start_tag('div', ['class' => 'content']);
 +
 +        $question = $qa->get_question();
 +        if (isset($options->passed)) {
-+            $output .= html_writer::start_tag('div', array('class' => 'formulation'));
-+            $output .= html_writer::tag('div', $this->add_part_heading($qtoutput->formulation_heading(), get_string('alreadyansweredcorrectly', 'local_quizadditionalbehaviour')), array('class' => ''));
++            $output .= html_writer::start_tag('div', ['class' => 'formulation']);
++            // Do not rename the language string component here.
++            $output .= html_writer::div(
++                $this->add_part_heading(
++                    $qtoutput->formulation_heading(),
++                    get_string('alreadyansweredcorrectly', 'local_quizadditionalbehaviour')
++                )
++            );
 +
 +            if (isset($options->passed_question) && $options->passed_question) {
-+                $output .= html_writer::start_tag('div', array('class' => 'hidden'));
++                $output .= html_writer::start_tag('div', ['class' => 'hidden']);
 +                $output .= $this->formulation($options->passed_question, $behaviouroutput, $qtoutput, $options);
 +                $output .= html_writer::end_tag('div');
 +                $output .= html_writer::end_tag('div');
-+                $passed_question_options = $options;
-+                $passed_question_options->readonly = true;
-+                $output .= html_writer::tag('div', $this->formulation($options->passed_question, $behaviouroutput, $qtoutput, $passed_question_options), array('class' => 'formulation clearfix'));
++                $passedquestionoptions = $options;
++                $passedquestionoptions->readonly = true;
++                $output .= html_writer::tag(
++                    'div',
++                    $this->formulation($options->passed_question, $behaviouroutput, $qtoutput, $passedquestionoptions),
++                    ['class' => 'formulation clearfix']
++                );
 +            } else {
-+                $output .= html_writer::start_tag('div', array('class' => 'hidden'));
++                $output .= html_writer::start_tag('div', ['class' => 'hidden']);
 +                $output .= $this->formulation($qa, $behaviouroutput, $qtoutput, $options);
 +                $output .= html_writer::end_tag('div');
 +                $output .= html_writer::end_tag('div');
@@ -299,29 +387,35 @@ index 0000000000..4614541cbf
 +            $output .= html_writer::tag('div',
 +                $this->add_part_heading($qtoutput->formulation_heading(),
 +                    $this->formulation($qa, $behaviouroutput, $qtoutput, $options)),
-+                array('class' => 'formulation clearfix'));
-+            if (isset($options->viewprevanswers) && $options->viewprevanswers === 1 && $number !== "i") {
-+                $output .= html_writer::start_tag('div', array('class' => 'clearfix formulation'));
++                ['class' => 'formulation clearfix']);
++            if (isset($options->viewprevanswers) && $options->viewprevanswers === 1 && $number !== 'i') {
++                $output .= html_writer::start_tag('div', ['class' => 'clearfix formulation']);
 +                $output .= '<p><a class="btn btn-primary" data-toggle="collapse" href="#collapsePrevQuestions' . $number .
 +                    '" aria-expanded="false" aria-controls="collapsePrevQuestions' . $number . '">View Previous Attempts</a></p>';
-+                $output .= html_writer::start_tag('div', array('class' => 'collapse', 'id' => "collapsePrevQuestions" . $number));
-+                $output .= html_writer::start_tag('div', array('class' => 'card card-body'));
++                $output .= html_writer::start_tag('div', ['class' => 'collapse', 'id' => "collapsePrevQuestions" . $number]);
++                $output .= html_writer::start_tag('div', ['class' => 'card card-body']);
 +                foreach ($options->prevanswers as $key => $value) {
-+                    $output .= "<b>Attempt " . ($key + 1) . "</b>";
++                    $output .= '<b>Attempt ' . ($key + 1) . '</b>';
 +                    $output .= $value;
 +                }
 +                $output .= html_writer::end_tag('div');
 +                $output .= html_writer::end_tag('div');
 +                $output .= html_writer::end_tag('div');
 +            }
-+            if (isset($options->viewcustomgrading) && $options->viewcustomgrading === 1 && $number !== "i") {
++            if (isset($options->viewcustomgrading) && $options->viewcustomgrading === 1 && $number !== 'i') {
++                $qabehaviour = $qa->get_behaviour();
 +                if ($qa->has_manual_comment() || $options->manualcommentlink) {
-+
++                    $manualcomment = '';
++                    if ($qa->has_manual_comment()) {
++                        $manualcomment = get_string(
++                            'commentx', 'question', $qabehaviour->format_comment(null, null, $options->context)
++                        );
++                    }
 +                    $context = [
 +                        'questionno' => $number,
 +                        'attemptid' => $options->quizattemptid,
 +                        'has_manual_comment' => $qa->has_manual_comment(),
-+                        'manual_comment' => ($qa->has_manual_comment() ? get_string('commentx', 'question', $qa->get_behaviour()->format_comment(null, null, $options->context)) : ''),
++                        'manual_comment' => $manualcomment,
 +                        'slot' => $qa->get_slot(),
 +                        'sesskey' => sesskey(),
 +                        'has_grader_info' => isset($question->graderinfo),
@@ -329,9 +423,11 @@ index 0000000000..4614541cbf
 +                            $question->format_text(
 +                                $question->graderinfo, $question->graderinfo, $qa, get_class($question->qtype),
 +                                'graderinfo', $question->id) :
-+                            ""),
++                            ''),
 +                        'manualcommentlink' => $options->manualcommentlink,
-+                        'manual_comment_fields' => ($options->manualcommentlink ? $behaviouroutput->manual_comment_fields($qa, $options) : ''),
++                        'manual_comment_fields' => (
++                        $options->manualcommentlink ? $behaviouroutput->manual_comment_fields($qa, $options) : ''
++                        ),
 +                    ];
 +                    $output .= $this->render_from_template('local_quizadditionalbehaviour/grading_grade', $context);
 +                }
@@ -339,15 +435,15 @@ index 0000000000..4614541cbf
 +                $output .= html_writer::nonempty_tag('div',
 +                    $this->add_part_heading(get_string('comments', 'question'),
 +                        $this->manual_comment($qa, $behaviouroutput, $qtoutput, $options)),
-+                    array('class' => 'comment clearfix'));
++                    ['class' => 'comment clearfix']);
 +            }
 +            $output .= html_writer::nonempty_tag('div',
 +                $this->add_part_heading(get_string('feedback', 'question'),
 +                    $this->outcome($qa, $behaviouroutput, $qtoutput, $options)),
-+                array('class' => 'outcome clearfix'));
++                ['class' => 'outcome clearfix']);
 +            $output .= html_writer::nonempty_tag('div',
 +                $this->response_history($qa, $behaviouroutput, $qtoutput, $options),
-+                array('class' => 'history clearfix border p-2'));
++                ['class' => 'history clearfix border p-2']);
 +        }
 +
 +        $output .= html_writer::end_tag('div');
@@ -355,4 +451,3 @@ index 0000000000..4614541cbf
 +        return $output;
 +    }
 +}
-\ No newline at end of file
