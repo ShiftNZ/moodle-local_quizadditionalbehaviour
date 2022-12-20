@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Question behaviour deferred feedback override for local_quizadditionalbehaviour.
+ * Upgrade script for local_quizadditionalbehaviour.
  *
  * @package     local_quizadditionalbehaviour
  * @author      Donald Barrett <donaldb@skills.org.nz>
@@ -23,12 +23,29 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_quizadditionalbehaviour\question\behaviour\deferredfeedback;
-
-use qbehaviour_deferredfeedback as core_qbehaviour_deferredfeedback;
-
 /**
- * Overridden deferred feedback question behaviour with no implementation. I am not entirely sure that this override is necessary.
+ * Upgrade function.
+ *
+ * @param int $oldversion $plugin->version number.
+ * @return void
+ * @throws coding_exception
+ * @throws dml_exception
+ * @throws downgrade_exception
+ * @throws upgrade_exception
  */
-class qbehaviour_deferredfeedback extends core_qbehaviour_deferredfeedback {
+function xmldb_local_quizadditionalbehaviour_upgrade($oldversion) {
+    global $DB;
+    if ($oldversion < 2022032406) {
+        // Remove the old "adv" settings.
+        $advancedsettings = [
+            'customgrading_adv',
+            'disablecorrect_adv',
+            'disablecorrectshowcorrect_adv',
+            'disableshowcorrectforstudent_adv'
+        ];
+        list($sqlwhere, $sqlparams) = $DB->get_in_or_equal($advancedsettings);
+        $sqlparams[] = 'quiz';
+        $DB->delete_records_select('config_plugins', "name $sqlwhere AND plugin = ?", $sqlparams);
+        upgrade_plugin_savepoint(true, 2022032406, 'local', 'quizadditionalbehaviour');
+    }
 }

@@ -29,6 +29,7 @@ defined('MOODLE_INTERNAL') || die();
 // Default langstring.
 $string['pluginname'] = 'Quiz additional behaviour';
 $string['additionalquestionbehaviour'] = 'Additional question behaviour';
+$string['privacy:metadata'] = 'The local_quizadditionalbehaviour plugin does not store any personal data.';
 
 // Settings things.
 $string['customgrading'] = 'Quiz custom grading';

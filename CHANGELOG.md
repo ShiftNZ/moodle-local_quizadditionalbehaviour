@@ -6,7 +6,19 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 
 ## [Unreleased]
 
-There is nothing that is unreleased
+- No unreleased things.
+
+## [Version 2022032406, release v3.9.6]
+### Added
+- Code checker fixes
+- Privacy implementation
+- Github actions
+- Upgrade script
+
+### Updated
+- Template with code checker fixes
+- Patch files with code checker fixes
+- Replaced the config_setting_with_adv to just config_setting
 
 ## [Version 2022032405, release v3.9.5]
 ### Added

@@ -17,7 +17,7 @@
 /**
  * Render overrides for local_quizadditionalbehaviour.
  *
- * Todo: This file must be copied into theme/renderers/question_renderer. See README.md.
+ * Todo: This file must be copied into theme/renderers/question_renderer, and the class renamed. See README.md.
  *
  * @package     local_quizadditionalbehaviour
  * @author      Donald Barrett <donaldb@skills.org.nz>
@@ -30,8 +30,22 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/question/engine/renderer.php');
 
-// Todo: Rename local_quizadditionalbehaviour to theme_themename after it has been moved. See README.md.
+/**
+ * The renderer that needs to be copied and renamed into the theme, or patched in.
+ */
 class local_quizadditionalbehaviour_core_question_renderer extends \core_question_renderer {
+    /**
+     * Overridden question render.
+     *
+     * @param question_attempt $qa A question_attempt object. We expect this to be the overridden one.
+     * @param qbehaviour_renderer $behaviouroutput The question behaviour renderer.
+     * @param qtype_renderer $qtoutput The question type renderer.
+     * @param question_display_options $options The question_display_options. We expect this to be the overridden one.
+     * @param int $number The number of the question.
+     * @return HTML|string
+     * @throws coding_exception
+     * @throws moodle_exception
+     */
     public function question(
             question_attempt $qa,
             qbehaviour_renderer $behaviouroutput,
@@ -94,16 +108,25 @@ class local_quizadditionalbehaviour_core_question_renderer extends \core_questio
         if (isset($options->passed)) {
             $output .= html_writer::start_tag('div', ['class' => 'formulation']);
             // Do not rename the language string component here.
-            $output .= html_writer::tag('div', $this->add_part_heading($qtoutput->formulation_heading(), get_string('alreadyansweredcorrectly', 'local_quizadditionalbehaviour')), ['class' => '']);
+            $output .= html_writer::div(
+                $this->add_part_heading(
+                    $qtoutput->formulation_heading(),
+                    get_string('alreadyansweredcorrectly', 'local_quizadditionalbehaviour')
+                )
+            );
 
             if (isset($options->passed_question) && $options->passed_question) {
                 $output .= html_writer::start_tag('div', ['class' => 'hidden']);
                 $output .= $this->formulation($options->passed_question, $behaviouroutput, $qtoutput, $options);
                 $output .= html_writer::end_tag('div');
                 $output .= html_writer::end_tag('div');
-                $passed_question_options = $options;
-                $passed_question_options->readonly = true;
-                $output .= html_writer::tag('div', $this->formulation($options->passed_question, $behaviouroutput, $qtoutput, $passed_question_options), ['class' => 'formulation clearfix']);
+                $passedquestionoptions = $options;
+                $passedquestionoptions->readonly = true;
+                $output .= html_writer::tag(
+                    'div',
+                    $this->formulation($options->passed_question, $behaviouroutput, $qtoutput, $passedquestionoptions),
+                    ['class' => 'formulation clearfix']
+                );
             } else {
                 $output .= html_writer::start_tag('div', ['class' => 'hidden']);
                 $output .= $this->formulation($qa, $behaviouroutput, $qtoutput, $options);
@@ -130,12 +153,19 @@ class local_quizadditionalbehaviour_core_question_renderer extends \core_questio
                 $output .= html_writer::end_tag('div');
             }
             if (isset($options->viewcustomgrading) && $options->viewcustomgrading === 1 && $number !== 'i') {
+                $qabehaviour = $qa->get_behaviour();
                 if ($qa->has_manual_comment() || $options->manualcommentlink) {
+                    $manualcomment = '';
+                    if ($qa->has_manual_comment()) {
+                        $manualcomment = get_string(
+                            'commentx', 'question', $qabehaviour->format_comment(null, null, $options->context)
+                        );
+                    }
                     $context = [
                         'questionno' => $number,
                         'attemptid' => $options->quizattemptid,
                         'has_manual_comment' => $qa->has_manual_comment(),
-                        'manual_comment' => ($qa->has_manual_comment() ? get_string('commentx', 'question', $qa->get_behaviour()->format_comment(null, null, $options->context)) : ''),
+                        'manual_comment' => $manualcomment,
                         'slot' => $qa->get_slot(),
                         'sesskey' => sesskey(),
                         'has_grader_info' => isset($question->graderinfo),
@@ -145,9 +175,11 @@ class local_quizadditionalbehaviour_core_question_renderer extends \core_questio
                                 'graderinfo', $question->id) :
                             ''),
                         'manualcommentlink' => $options->manualcommentlink,
-                        'manual_comment_fields' => ($options->manualcommentlink ? $behaviouroutput->manual_comment_fields($qa, $options) : ''),
+                        'manual_comment_fields' => (
+                            $options->manualcommentlink ? $behaviouroutput->manual_comment_fields($qa, $options) : ''
+                        ),
                     ];
-                    $output .= $this->render_from_template('core_question/grading_grade', $context);
+                    $output .= $this->render_from_template('local_quizadditionalbehaviour/grading_grade', $context);
                 }
             } else {
                 $output .= html_writer::nonempty_tag('div',

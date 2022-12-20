@@ -23,9 +23,14 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// No direct access.
-defined('MOODLE_INTERNAL') || die();
-
+/**
+ * Install the plugin. Add additional fields to the quiz table for
+ * this additional behaviour without modifying the install.xml.
+ *
+ * @return void
+ * @throws ddl_exception
+ * @throws ddl_table_missing_exception
+ */
 function xmldb_local_quizadditionalbehaviour_install() {
     global $DB;
     $dbman = $DB->get_manager();

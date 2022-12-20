@@ -25,8 +25,6 @@
 
 namespace local_quizadditionalbehaviour;
 
-// No direct access.
-
 use mod_quiz_renderer;
 use quiz_attempt as core_quiz_attempt;
 use quiz_access_manager;
@@ -39,10 +37,28 @@ use stdClass;
 use mod_quiz\event\question_manually_graded;
 use coding_exception;
 use html_writer;
+use dml_exception;
+use mod_quiz_display_options;
+use question_display_options;
+use lang_string;
+use dml_transaction_exception;
+use moodle_url;
 
-defined('MOODLE_INTERNAL') || die();
-
+/**
+ * Overridden quiz_attempt class to add additional functionality for this additional quiz behaviour.
+ */
 class quiz_attempt extends core_quiz_attempt {
+    /**
+     * Quiz attempt constructor that does the core things and then non-core things.
+     *
+     * @param object $attempt the row of the quiz_attempts table.
+     * @param object $quiz the quiz object for this attempt and user.
+     * @param object $cm the course_module object for this quiz.
+     * @param object $course the row from the course table for the course we belong to.
+     * @param bool $loadquestions this is always set to false in our version of this object.
+     * @throws coding_exception
+     * @throws dml_exception
+     */
     public function __construct($attempt, $quiz, $cm, $course, $loadquestions = true) {
         // Need to do self quba.
         $loadquestions = false;
@@ -50,19 +66,25 @@ class quiz_attempt extends core_quiz_attempt {
         $this->load_questions();
     }
 
+    /**
+     * Override display options if doing non-core things.
+     *
+     * @param bool $reviewing true for options when reviewing, false for when attempting.
+     * @return mod_quiz_display_options|question_display_options|null
+     * @throws dml_exception
+     */
     public function get_display_options($reviewing) {
         global $USER, $DB;
         if (!$reviewing) {
             // Do the core things.
             return parent::get_display_options($reviewing);
         }
-        // Do the non core things.
+        // Do the non-core things.
         if (is_null($this->reviewoptions)) {
             $this->reviewoptions = quiz_get_review_options($this->get_quiz(),
                 $this->attempt, $this->quizobj->get_context());
             if ($this->is_own_preview()) {
-                // It should  always be possible for a teacher to review their
-                // own preview irrespective of the review options settings.
+                // It should always be possible for a teacher to review their own preview.
                 $this->reviewoptions->attempt = true;
             }
 
@@ -77,6 +99,14 @@ class quiz_attempt extends core_quiz_attempt {
         return $this->reviewoptions;
     }
 
+    /**
+     * Get question status if using additional behaviour otherwise return the core things.
+     *
+     * @param int $slot the number used to identify this question within this attempt.
+     * @param bool $showcorrectness Whether right/partial/wrong states should be distinguished.
+     * @return lang_string|string
+     * @throws coding_exception
+     */
     public function get_question_status($slot, $showcorrectness) {
         $lastcompleteattempt = $this->get_last_complete_attempt();
         if ($this->disablecorrect() && !empty($lastcompleteattempt) && $lastcompleteattempt[$slot]->correct) {
@@ -86,6 +116,19 @@ class quiz_attempt extends core_quiz_attempt {
         }
     }
 
+    /**
+     * Overridden render_question_helper. The customisations are only called if the quiz is
+     * configured to do so otherwise the core things are done.
+     *
+     * @param int $slot identifies the question in the attempt.
+     * @param bool $reviewing is the question being printed on an attempt or a review page.
+     * @param moodle_url $thispageurl the URL of the page this question is being printed on.
+     * @param mod_quiz_renderer $renderer the quiz renderer.
+     * @param int|null $seq the seq number of the past state to display.
+     * @return string
+     * @throws coding_exception
+     * @throws dml_exception
+     */
     protected function render_question_helper($slot, $reviewing, $thispageurl, mod_quiz_renderer $renderer, $seq) {
         $useparent = true;
         if (!empty($this->quizobj->get_quiz()->disablecorrect) && $this->get_attempt_number() > 1) {
@@ -182,6 +225,18 @@ class quiz_attempt extends core_quiz_attempt {
         return $output;
     }
 
+    /**
+     * Ensure that any previously answered correctly questions are shifted to the new attempt.
+     *
+     * @param int $timestamp the time to record as last modified time.
+     * @param bool $processsubmitted if true, and question responses in the current POST request are
+     *          stored to be graded, before the attempt is finished.
+     * @param ?int $timefinish if set, use this as the finish time for the attempt.
+     *          (otherwise use $timestamp as the finish time as well).
+     * @return void
+     * @throws coding_exception
+     * @throws dml_transaction_exception
+     */
     public function process_finish($timestamp, $processsubmitted, $timefinish = null) {
         // Do the overriden things.
         if ($this->disablecorrect()) {
@@ -195,10 +250,25 @@ class quiz_attempt extends core_quiz_attempt {
         }
     }
 
+    /**
+     * Ensure that the overridden quiz_attempt object is returned.
+     *
+     * @param int $attemptid the attempt id.
+     * @return quiz_attempt|core_quiz_attempt
+     */
     public static function create($attemptid) {
         return self::create_helper(['id' => $attemptid]);
     }
 
+    /**
+     * Ensures that an overridden quiz_attempt object that has the additional behaviour
+     * working is returned.
+     *
+     * @param array $conditions passed to $DB->get_record('quiz_attempts', $conditions).
+     * @return quiz_attempt
+     * @throws coding_exception
+     * @throws dml_exception
+     */
     protected static function create_helper($conditions) {
         global $DB;
 
@@ -213,6 +283,18 @@ class quiz_attempt extends core_quiz_attempt {
         return new quiz_attempt($attempt, $quiz, $cm, $course);
     }
 
+    /**
+     * Manually grades a question. This is for quiz_attempts where a question was previously
+     * marked as correct.
+     *
+     * @param int $slot the number used to identify this question within this attempt.
+     * @param string $comment the grader comment for this manually graded question.
+     * @param number $mark the mark that is being assigned. Can be null to just to add a comment.
+     * @param int $commentformat one of the FORMAT_... constants. The format of the $comment.
+     * @return void
+     * @throws dml_transaction_exception
+     * @throws coding_exception
+     */
     public function manual_grade_question($slot, $comment, $mark, $commentformat = null) {
         global $DB;
         $this->quba->manual_grade($slot, $comment, $mark, $commentformat);
@@ -237,6 +319,12 @@ class quiz_attempt extends core_quiz_attempt {
         $event->trigger();
     }
 
+    /**
+     * Checks if custom grading can happen.
+     *
+     * @return bool
+     * @throws coding_exception
+     */
     public function customgrading() {
         $quiz = $this->quizobj->get_quiz();
         $quizcontext = $this->get_quizobj()->get_context();
@@ -245,14 +333,30 @@ class quiz_attempt extends core_quiz_attempt {
         return (!empty($customgrading) && $cangradequiz);
     }
 
+    /**
+     * Checks if this attempt needs to disable any correct responses.
+     *
+     * @return bool
+     */
     public function disablecorrect() {
         return (!empty($this->quizobj->get_quiz()->disablecorrect) && $this->get_attempt_number() > 1);
     }
 
+    /**
+     * Checks if this quiz is configured to disable showing the correct response for the student.
+     * @return bool
+     */
     public function disableshowcorrectforstudent() {
         return (!empty($this->quizobj->get_quiz()->disableshowcorrectforstudent));
     }
 
+    /**
+     * Gets the last complete quiz_attempt to help facilitate the correctness of the previous quiz_attempt.
+     *
+     * @return array
+     * @throws coding_exception
+     * @throws dml_exception
+     */
     public function get_last_complete_attempt() {
         if (!$this->disablecorrect()) {
             return [];
@@ -286,6 +390,14 @@ class quiz_attempt extends core_quiz_attempt {
         return $qdata;
     }
 
+    /**
+     * Overridden load_questions so that the default question engine function
+     * load_questions_usage_by_activity can be called.
+     *
+     * @return void
+     * @throws coding_exception
+     * @throws dml_exception
+     */
     public function load_questions() {
         global $DB;
 
